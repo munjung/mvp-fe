@@ -1,8 +1,10 @@
 import './assets/css/App.css'
+import { useNavigate } from 'react-router-dom'
 import { useCards } from './hooks/useCards'
 
 function App() {
   const { data: cards, isLoading, isError } = useCards()
+  const navigate = useNavigate()
 
   return (
     <div className="page">
@@ -17,15 +19,24 @@ function App() {
       {cards && (
         <main className="card-grid">
           {cards.map((card) => (
-            <div key={card.id} className="card">
+            <div
+              key={card.id}
+              className="card"
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate(`/cards/${card.id}`)}
+            >
               <div className="card-thumbnail" />
               <div className="card-body">
-                <span className="card-tag">{card.tag}</span>
+                <div className="card-tags">
+                  {card.tags.map((tag) => (
+                    <span key={tag} className="card-tag">{tag}</span>
+                  ))}
+                </div>
                 <h2 className="card-title">{card.title}</h2>
                 <p className="card-desc">{card.description}</p>
               </div>
               <div className="card-footer">
-                <button className="card-btn">자세히 보기</button>
+                <button className="card-btn" onClick={(e) => { e.stopPropagation(); navigate(`/cards/${card.id}`) }}>자세히 보기</button>
               </div>
             </div>
           ))}

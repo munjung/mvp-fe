@@ -67,6 +67,12 @@
   text-align: left;
 }
 
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .card-tag {
   font-size: 12px;
   font-weight: 600;
