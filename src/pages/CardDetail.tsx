@@ -1,13 +1,22 @@
+import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useCards } from '../hooks/useCards'
+import TabMenu from '../components/TabMenu'
+import EstimateTab from '../components/tabs/EstimateTab'
+import InjuryTab from '../components/tabs/InjuryTab'
+import FaultTab from '../components/tabs/FaultTab'
 import '../assets/css/App.css'
+
+const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab]
 
 function CardDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: cards, isLoading, isError } = useCards()
+  const [activeTab, setActiveTab] = useState(0)
 
   const card = cards?.find((c) => c.id === Number(id))
+  const TabContent = TAB_COMPONENTS[activeTab]
 
   return (
     <div className="page">
@@ -15,6 +24,18 @@ function CardDetail() {
         <button className="card-btn" onClick={() => navigate(-1)} style={{ marginBottom: 24 }}>
           ← 목록으로
         </button>
+        {card && (
+          <>
+            <div className="card-tags">
+              {card.tags.map((tag) => (
+                <span key={tag} className="card-tag">{tag}</span>
+              ))}
+            </div>
+            <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-h)', margin: '12px 0 0' }}>
+              {card.title}
+            </h1>
+          </>
+        )}
       </header>
 
       {isLoading && <p className="status-msg">불러오는 중...</p>}
@@ -22,16 +43,8 @@ function CardDetail() {
 
       {card && (
         <main>
-          <div className="card-thumbnail" style={{ borderRadius: 12, marginBottom: 32 }} />
-          <div className="card-tags">
-            {card.tags.map((tag) => (
-              <span key={tag} className="card-tag">{tag}</span>
-            ))}
-          </div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-h)', margin: '12px 0 16px' }}>
-            {card.title}
-          </h1>
-          <p style={{ fontSize: 16, color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p>
+          <TabMenu active={activeTab} onChange={setActiveTab} />
+          <TabContent card={card} />
         </main>
       )}
 

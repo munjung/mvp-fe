@@ -1,0 +1,29 @@
+.tab-menu {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+  gap: 0;
+}
+
+.tab-item {
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--text-h);
+  }
+}
+
+.tab-item--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
