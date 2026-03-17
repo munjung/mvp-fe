@@ -1,3 +1,13 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Cards API
+// 백엔드 연결 시 더미 데이터 제거 후 주석 해제
+// ─────────────────────────────────────────────────────────────────────────────
+
+// import client from './client'  // 백엔드 연결 시 주석 해제
+
+// const BASE = '/api/v1/cards'  // 백엔드 연결 시 주석 해제
+
+// ─── 타입 ────────────────────────────────────────────────────────────────────
 
 export interface Card {
   id: number
@@ -5,6 +15,8 @@ export interface Card {
   description: string
   tags: string[]
 }
+
+// ─── 더미 데이터 (백엔드 연결 후 제거) ──────────────────────────────────────
 
 const DUMMY_CARDS: Card[] = [
   { id: 1, title: 'AI 자동차 손해사정', description: '견적 산정 · 과실비율 분석 · 처리방법 제안까지 AI가 의사결정을 지원하는 자동차 손해사정 포탈 (신규 개발 버전)', tags: ['태그1', '태그2'] },
@@ -15,9 +27,34 @@ const DUMMY_CARDS: Card[] = [
   { id: 6, title: '카드 제목 6', description: '카드에 대한 간단한 설명을 이곳에 작성합니다.', tags: ['태그'] },
 ]
 
-// TODO: 백엔드 구축 후 아래 주석 해제, 더미 데이터 제거
+// ─── API 함수 ─────────────────────────────────────────────────────────────────
+
+// [GET] /api/v1/cards — 카드 목록 조회
 export const getCards = async (): Promise<Card[]> => {
-  // const { data } = await client.get<Card[]>('/cards')
+  // const { data } = await client.get<Card[]>(BASE)
   // return data
   return DUMMY_CARDS
 }
+
+// [GET] /api/v1/cards/:id — 카드 상세 조회
+// export const getCardById = async (id: number): Promise<Card> => {
+//   const { data } = await client.get<Card>(`${BASE}/${id}`)
+//   return data
+// }
+
+// [POST] /api/v1/cards — 카드 등록
+// export const createCard = async (payload: Omit<Card, 'id'>): Promise<Card> => {
+//   const { data } = await client.post<Card>(BASE, payload)
+//   return data
+// }
+
+// [PUT] /api/v1/cards/:id — 카드 수정
+// export const updateCard = async (id: number, payload: Partial<Omit<Card, 'id'>>): Promise<Card> => {
+//   const { data } = await client.put<Card>(`${BASE}/${id}`, payload)
+//   return data
+// }
+
+// [DELETE] /api/v1/cards/:id — 카드 삭제
+// export const deleteCard = async (id: number): Promise<void> => {
+//   await client.delete(`${BASE}/${id}`)
+// }
