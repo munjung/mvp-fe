@@ -1,16 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom'
-import App from '../App'
+import RootLayout from '../layouts/RootLayout'
+import CardList from '../pages/CardList'
 import CardDetail from '../pages/CardDetail'
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-  },
-  {
-    path: '/cards/:id',
-    element: <CardDetail />,
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <CardList /> },
+      { path: '/cards/:id', element: <CardDetail /> },
+    ],
   },
 ])
-
-export default router
