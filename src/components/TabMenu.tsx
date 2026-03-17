@@ -1,5 +1,3 @@
-import './TabMenu.css'
-
 const TABS = ['견적 산정', '대인피해', '과실 산정']
 
 interface TabMenuProps {

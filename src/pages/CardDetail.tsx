@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useCards } from '../hooks/useCards'
-import TabMenu from '../components/TabMenu'
-import EstimateTab from '../components/tabs/EstimateTab'
-import InjuryTab from '../components/tabs/InjuryTab'
-import FaultTab from '../components/tabs/FaultTab'
-import '@assets/css/App.css'
+import { useCards } from '@hooks/useCards'
+import TabMenu from '@components/TabMenu'
+import EstimateTab from '@components/tabs/EstimateTab'
+import InjuryTab from '@components/tabs/InjuryTab'
+import FaultTab from '@components/tabs/FaultTab'
 
 const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab]
 
