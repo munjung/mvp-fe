@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getCards } from '../api/cards'
+import { getCards } from '@api/cards'
 
 export const useCards = () => {
   return useQuery({

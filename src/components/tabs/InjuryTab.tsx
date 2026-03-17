@@ -1,4 +1,4 @@
-import type { Card } from '../../api/cards'
+import type { Card } from '@api/cards'
 
 interface Props {
   card: Card

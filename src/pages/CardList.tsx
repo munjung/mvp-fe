@@ -1,6 +1,5 @@
-import '@assets/css/App.css'
 import { useNavigate } from 'react-router-dom'
-import { useCards } from '../hooks/useCards'
+import { useCards } from '@hooks/useCards'
 
 function Main() {
   const { data: cards, isLoading, isError } = useCards()
