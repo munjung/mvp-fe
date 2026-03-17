@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useCards } from '@hooks/useCards'
 
-function Main() {
+export default function CardList() {
   const { data: cards, isLoading, isError } = useCards()
   const navigate = useNavigate()
 
@@ -28,14 +28,24 @@ function Main() {
               <div className="card-body">
                 <div className="card-tags">
                   {card.tags.map((tag) => (
-                    <span key={tag} className="card-tag">{tag}</span>
+                    <span key={tag} className="card-tag">
+                      {tag}
+                    </span>
                   ))}
                 </div>
                 <h2 className="card-title">{card.title}</h2>
                 <p className="card-desc">{card.description}</p>
               </div>
               <div className="card-footer">
-                <button className="card-btn" onClick={(e) => { e.stopPropagation(); navigate(`/cards/${card.id}`) }}>자세히 보기</button>
+                <button
+                  className="card-btn"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    navigate(`/cards/${card.id}`)
+                  }}
+                >
+                  자세히 보기
+                </button>
               </div>
             </div>
           ))}
@@ -44,5 +54,3 @@ function Main() {
     </div>
   )
 }
-
-export default Main
