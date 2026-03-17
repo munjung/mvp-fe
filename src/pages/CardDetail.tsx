@@ -5,7 +5,7 @@ import TabMenu from '../components/TabMenu'
 import EstimateTab from '../components/tabs/EstimateTab'
 import InjuryTab from '../components/tabs/InjuryTab'
 import FaultTab from '../components/tabs/FaultTab'
-import '../assets/css/App.css'
+import '@assets/css/App.css'
 
 const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab]
 

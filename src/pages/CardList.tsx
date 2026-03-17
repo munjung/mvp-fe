@@ -1,8 +1,8 @@
-import './assets/css/App.css'
+import '@assets/css/App.css'
 import { useNavigate } from 'react-router-dom'
-import { useCards } from './hooks/useCards'
+import { useCards } from '../hooks/useCards'
 
-function App() {
+function Main() {
   const { data: cards, isLoading, isError } = useCards()
   const navigate = useNavigate()
 
@@ -46,4 +46,4 @@ function App() {
   )
 }
 
-export default App
+export default Main

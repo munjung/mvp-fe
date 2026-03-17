@@ -1,6 +1,6 @@
 # React Build
 
-npm run loc
+npm run dev
 
 # React + TypeScript + Vite
 
