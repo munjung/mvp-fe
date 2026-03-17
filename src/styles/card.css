@@ -9,6 +9,10 @@
   text-align: center;
 }
 
+.page-header--left {
+  text-align: left;
+}
+
 .page-header h1 {
   font-size: 32px;
   font-weight: 700;
@@ -21,22 +25,26 @@
   color: var(--text);
 }
 
-/* Card Grid */
+/* 카드 그리드 */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
+}
 
-  @media (max-width: 900px) {
+@media (max-width: 900px) {
+  .card-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  @media (max-width: 580px) {
+@media (max-width: 580px) {
+  .card-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Card */
+/* 카드 */
 .card {
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -44,12 +52,14 @@
   background: var(--bg);
   display: flex;
   flex-direction: column;
-  transition: box-shadow 0.2s, transform 0.2s;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+}
 
-  &:hover {
-    box-shadow: var(--shadow);
-    transform: translateY(-2px);
-  }
+.card:hover {
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
 }
 
 .card-thumbnail {
@@ -102,17 +112,19 @@
   text-align: left;
 }
 
+/* 상태 메시지 */
 .status-msg {
   text-align: center;
   padding: 60px 0;
   color: var(--text);
   font-size: 16px;
-
-  &.error {
-    color: #ef4444;
-  }
 }
 
+.status-msg.error {
+  color: #ef4444;
+}
+
+/* 버튼 */
 .card-btn {
   font-size: 14px;
   font-weight: 500;
@@ -122,16 +134,37 @@
   background: var(--bg);
   color: var(--text-h);
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
-
-  &:hover {
-    background: var(--accent-bg);
-    border-color: var(--accent-border);
-    color: var(--accent);
-  }
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
 }
 
-/* Tab */
+.card-btn:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.card-btn--back {
+  margin-bottom: 24px;
+}
+
+/* 상세 페이지 */
+.detail-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-h);
+  margin: 12px 0 0;
+}
+
+.detail-desc {
+  color: var(--text);
+  line-height: 1.7;
+  margin-top: 15px;
+}
+
+/* 탭 */
 .tab-menu {
   display: flex;
   border-bottom: 1px solid var(--border);
@@ -149,11 +182,13 @@
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
 
-  &:hover {
-    color: var(--text-h);
-  }
+.tab-item:hover {
+  color: var(--text-h);
 }
 
 .tab-item--active {
@@ -161,4 +196,3 @@
   border-bottom-color: var(--accent);
   font-weight: 600;
 }
-

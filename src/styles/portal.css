@@ -1,0 +1,222 @@
+.portal-page {
+  width: 100%;
+  font-size: 14px; /* 포털 기준 폰트 */
+  color: var(--portal-text, var(--text));
+}
+
+/* 텍스트는 부모 색상 따르기 */
+.portal-page h1,
+.portal-page h2,
+.portal-page p {
+  color: inherit;
+}
+
+/* 중앙 정렬 영역 */
+.portal-hero,
+.portal-grid-wrap,
+.portal-cta-wrap,
+.portal-header-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 헤더 */
+.portal-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 14px 32px;
+  backdrop-filter: blur(20px);
+}
+
+.portal-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.portal-logo-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.portal-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* 테마 버튼 */
+.portal-theme-group {
+  display: flex;
+  gap: 8px;
+}
+
+.portal-theme-btn {
+  padding: 5px 10px;
+  font-size: 11px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+/* 히어로 */
+.portal-hero {
+  padding: 60px 32px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.portal-hero h1 {
+  font-size: 40px;
+}
+
+.portal-hero p {
+  line-height: 1.7;
+}
+
+/* 그리드 */
+.portal-grid-wrap {
+  padding: 0 32px 40px;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* 카드 */
+.portal-card {
+  border-radius: 18px;
+  padding: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.portal-card:hover {
+  transform: translateY(-4px);
+}
+
+.portal-card-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  margin-bottom: 14px;
+}
+
+.portal-card-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.portal-card h2 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.portal-card p {
+  font-size: 12.5px;
+  margin-bottom: 14px;
+  line-height: 1.6;
+}
+
+.portal-card-tags {
+  display: flex;
+}
+
+.portal-card-tag-list {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.portal-tag {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* 의뢰 카드 */
+.portal-request-card {
+  border-radius: 18px;
+  padding: 20px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.portal-request-plus {
+  font-size: 20px;
+}
+
+.portal-request-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.portal-request-desc {
+  font-size: 11px;
+}
+
+/* 모달 */
+.portal-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.portal-modal {
+  width: 520px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.portal-modal input,
+.portal-modal textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--portal-input-border, var(--border));
+}
+
+.portal-submit-btn {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  .portal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .portal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-hero h1 {
+    font-size: 32px;
+  }
+}
