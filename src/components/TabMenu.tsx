@@ -1,4 +1,4 @@
-const TABS = ['견적 산정', '대인피해', '과실 산정']
+const TABS = ['견적 산정', '대인피해', '과실 산정', '처리 방법']
 
 interface TabMenuProps {
   active: number
