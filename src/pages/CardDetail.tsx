@@ -14,12 +14,13 @@ function CardDetail() {
   const navigate = useNavigate()
   const { data: cards, isLoading, isError } = useCards()
   const [activeTab, setActiveTab] = useState(0)
+  const [selectedCase, setSelectedCase] = useState('')
 
   const card = cards?.find((c) => c.id === Number(id))
   const TabContent = TAB_COMPONENTS[activeTab]
 
   return (
-    <div className="page">
+    <div style={{ padding: '2% 8%' }}>
       <header className="page-header" style={{ textAlign: 'left' }}>
         <button className="card-btn" onClick={() => navigate(-1)} style={{ marginBottom: 24 }}>
           ← 목록으로
@@ -51,7 +52,7 @@ function CardDetail() {
       {card && (
         <main>
           <TabMenu active={activeTab} onChange={setActiveTab} />
-          <TabContent card={card} />
+          <TabContent card={card} selectedValue={selectedCase} onSelectChange={setSelectedCase} />
         </main>
       )}
 
