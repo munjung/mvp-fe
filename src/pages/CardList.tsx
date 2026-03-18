@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useCards } from '@hooks/useCards'
+import { BaseButton } from '@/components/common'
 
 export default function CardList() {
   const { data: cards, isLoading, isError } = useCards()
@@ -10,6 +11,11 @@ export default function CardList() {
       <header className="page-header">
         <h1>메인 화면</h1>
         <p>설명 텍스트를 이곳에 입력하세요.</p>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <BaseButton style={{ fontSize: 10 }} onClick={() => navigate('/guide')}>
+            가이드화면 이동 →
+          </BaseButton>
+        </div>
       </header>
 
       {isLoading && <p className="status-msg">불러오는 중...</p>}
@@ -37,15 +43,15 @@ export default function CardList() {
                 <p className="card-desc">{card.description}</p>
               </div>
               <div className="card-footer">
-                <button
-                  className="card-btn"
+                <BaseButton
+                  style={{ marginBottom: 24 }}
                   onClick={(e) => {
                     e.stopPropagation()
                     navigate(`/cards/${card.id}`)
                   }}
                 >
                   자세히 보기
-                </button>
+                </BaseButton>
               </div>
             </div>
           ))}

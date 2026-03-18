@@ -1,3 +1,4 @@
+/* 페이지 레이아웃 */
 .page {
   max-width: 1200px;
   margin: 0 auto;
@@ -124,32 +125,6 @@
   color: #ef4444;
 }
 
-/* 버튼 */
-.card-btn {
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-h);
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    border-color 0.2s,
-    color 0.2s;
-}
-
-.card-btn:hover {
-  background: var(--accent-bg);
-  border-color: var(--accent-border);
-  color: var(--accent);
-}
-
-.card-btn--back {
-  margin-bottom: 24px;
-}
-
 /* 상세 페이지 */
 .detail-title {
   font-size: 28px;
@@ -195,4 +170,105 @@
   color: var(--accent);
   border-bottom-color: var(--accent);
   font-weight: 600;
+}
+
+/***** 공통 *****/
+/* 버튼 */
+.base-button {
+  width: fit-content;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.base-button:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.base-button--back {
+  margin-bottom: 24px;
+}
+
+.base-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.base-radio-group {
+  display: flex;
+  gap: 12px;
+}
+
+.base-radio-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* min-width: 88px; */
+  width: fit-content;
+  padding: 10px 16px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #fff;
+  color: #222;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.base-radio-item[data-state='checked'] {
+  background: #1f3a8a;
+  border-color: #1f3a8a;
+  color: #fff;
+}
+
+.base-select-trigger {
+  /* min-width: 180px;
+  width: fit-content; */
+  width: 200px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.base-select-content {
+  overflow: hidden;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.base-select-viewport {
+  padding: 6px;
+}
+
+.base-select-item {
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.base-select-item[data-highlighted] {
+  background: #1f3a8a;
+  color: #fff;
+  outline: none;
 }
