@@ -26,7 +26,6 @@ function InjuryTab({ card, selectedValue, onSelectChange }: Props) {
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
       />
-      <p style={{ color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p>
       {/* TODO: 대인피해 기능 구현 */}
     </section>
   )

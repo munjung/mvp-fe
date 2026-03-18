@@ -68,7 +68,6 @@ function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
       />
-      {/* <p style={{ color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p> */}
       {/* TODO: 견적 산정 기능 구현 */}
 
       <BaseSection className="mt-20" title="차량 정보">
