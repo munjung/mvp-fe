@@ -369,7 +369,14 @@
    common - select
 ========================= */
 .base-select-trigger {
-  box-sizing: border-box;
+  width: fit-content;
+  min-width: 200px;
+  max-width: 420px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
