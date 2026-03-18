@@ -5,8 +5,9 @@ import TabMenu from '@components/TabMenu'
 import EstimateTab from '@components/tabs/EstimateTab'
 import InjuryTab from '@components/tabs/InjuryTab'
 import FaultTab from '@components/tabs/FaultTab'
+import ProcessTab from '@components/tabs/ProcessTab'
 
-const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab]
+const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab, ProcessTab]
 
 function CardDetail() {
   const { id } = useParams<{ id: string }>()
