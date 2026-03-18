@@ -1,3 +1,6 @@
 export { default as BaseButton } from './BaseButton'
 export { default as BaseRadio } from './BaseRadio'
 export { default as BaseSelect } from './BaseSelect'
+export { default as BaseTab } from './BaseTab'
+export { default as BaseTabHeader } from './BaseTabHeader'
+export type { BadgeMeta } from './BaseTabHeader'

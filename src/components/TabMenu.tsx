@@ -1,24 +1,12 @@
+import { BaseTab } from '@components/common'
+
 const TABS = ['견적 산정', '대인피해', '과실 산정', '처리 방법']
 
-interface TabMenuProps {
+interface Props {
   active: number
   onChange: (index: number) => void
 }
 
-function TabMenu({ active, onChange }: TabMenuProps) {
-  return (
-    <nav className="tab-menu">
-      {TABS.map((tab, index) => (
-        <button
-          key={tab}
-          className={`tab-item${active === index ? ' tab-item--active' : ''}`}
-          onClick={() => onChange(index)}
-        >
-          {tab}
-        </button>
-      ))}
-    </nav>
-  )
+export default function TabMenu({ active, onChange }: Props) {
+  return <BaseTab tabs={TABS} active={active} onChange={onChange} />
 }
-
-export default TabMenu
