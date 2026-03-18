@@ -6,7 +6,7 @@ interface BaseButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export default function BaseButton({ children, className = '', ...props }: BaseButtonProps) {
   return (
-    <button className={`common-btn ${className}`.trim()} {...props}>
+    <button className={`base-button ${className}`.trim()} {...props}>
       {children}
     </button>
   )
