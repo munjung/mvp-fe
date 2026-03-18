@@ -6,20 +6,22 @@ import EstimateTab from '@components/tabs/EstimateTab'
 import InjuryTab from '@components/tabs/InjuryTab'
 import FaultTab from '@components/tabs/FaultTab'
 import { BaseButton } from '@components/common'
+import ProcessTab from '@components/tabs/ProcessTab'
 
-const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab]
+const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab, ProcessTab]
 
 function CardDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: cards, isLoading, isError } = useCards()
   const [activeTab, setActiveTab] = useState(0)
+  const [selectedCase, setSelectedCase] = useState('')
 
   const card = cards?.find((c) => c.id === Number(id))
   const TabContent = TAB_COMPONENTS[activeTab]
 
   return (
-    <div className="page">
+    <div style={{ padding: '2% 8%' }}>
       <header className="page-header" style={{ textAlign: 'left' }}>
         <BaseButton style={{ marginBottom: 24 }} onClick={() => navigate(-1)}>
           ← 목록으로
@@ -51,7 +53,7 @@ function CardDetail() {
       {card && (
         <main>
           <TabMenu active={activeTab} onChange={setActiveTab} />
-          <TabContent card={card} />
+          <TabContent card={card} selectedValue={selectedCase} onSelectChange={setSelectedCase} />
         </main>
       )}
 

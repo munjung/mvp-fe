@@ -1,7 +1,4 @@
-// AI 자동차 손해사정 > 견적 산정 탭
-import { useState } from 'react'
 import type { Card } from '@api/cards'
-import { BaseRadio } from '@components/common'
 import TabHeader from './TabHeader'
 
 interface Props {
@@ -10,26 +7,12 @@ interface Props {
   onSelectChange: (value: string) => void
 }
 
-// [DATA] 라디오 버튼 옵션
-const radioOptions = [
-  { label: '전체', value: '' },
-  { label: '국산', value: '국산차' },
-  { label: '외산', value: '외산차' },
-]
-
-function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
-   const [radio, setRadio] = useState('국산차')
-
-  // [FUNC] 라디오 버튼 변경 핸들러
-  const handleRadioChange = (value: string) => {
-    setRadio(value)
-  }
-
+function ProcessTab({ card, selectedValue, onSelectChange }: Props) {
   return (
     <section>
       <TabHeader
-        title="견적 산정"
-        tabType="estimate"
+        title="처리 방법"
+        tabType="process"
         selectOptions={[
           { value: '', label: 'Use Case를 선택하세요' },
           { value: 'case1', label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈' },
@@ -44,11 +27,9 @@ function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
         onViewSituation={() => {}}
       />
       <p style={{ color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p>
-      {/* TODO: 견적 산정 기능 구현 */}
-
-      <BaseRadio options={radioOptions} value={radio} onChange={handleRadioChange} />
+      {/* TODO: 처리방법 기능 구현 */}
     </section>
   )
 }
 
-export default EstimateTab
+export default ProcessTab

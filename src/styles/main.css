@@ -1,5 +1,6 @@
 @import './portal.css';
 @import './card.css';
+@import './tab.css';
 
 /* 기본 디자인 변수 */
 :root {
