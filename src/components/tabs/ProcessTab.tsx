@@ -14,7 +14,7 @@ function ProcessTab({ card, selectedValue, onSelectChange }: Props) {
         title="처리 방법"
         tabType="process"
         selectOptions={[
-          { value: '', label: 'Use Case를 선택하세요' },
+          { value: 'default', label: 'Use Case를 선택하세요' },
           { value: 'case1', label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈' },
           { value: 'case2', label: 'Case 2: sample case 2' },
           { value: 'case3', label: 'Case 3: sample case 3' },
