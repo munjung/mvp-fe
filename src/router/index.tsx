@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import RootLayout from '@/layouts/RootLayout'
 import PortalPage from '@/pages/PortalPage'
+import GuidePage from '@/pages/GuidePage'
 import CardList from '@/pages/CardList'
 import CardDetail from '@/pages/CardDetail'
 import ClaimsAgentMVP from '@/pages/mvps/ClaimsAgentMVP'
@@ -15,8 +16,11 @@ export const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <CardList /> },
-      { path: '/cards/:id', element: <CardDetail /> },
+      { path: 'cards/:id', element: <CardDetail /> },
 
+      /* 가이드 화면 */
+      { path: 'guide', element: <GuidePage /> },
+      /* 테스트용 */
       { path: 'mvps', element: <PortalPage /> },
 
       { path: 'mvps/claims', element: <ClaimsAgentMVP /> },

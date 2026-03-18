@@ -11,6 +11,11 @@ export default function CardList() {
       <header className="page-header">
         <h1>메인 화면</h1>
         <p>설명 텍스트를 이곳에 입력하세요.</p>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <BaseButton style={{ fontSize: 10 }} onClick={() => navigate('/guide')}>
+            가이드화면 이동 →
+          </BaseButton>
+        </div>
       </header>
 
       {isLoading && <p className="status-msg">불러오는 중...</p>}
