@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 
 interface BaseFormFieldProps {
-  label: string
+  label?: string
   children: ReactNode
   className?: string
   required?: boolean
 }
 
 export default function BaseFormField({
-  label,
+  label = '',
   children,
   className = '',
   required = false,
