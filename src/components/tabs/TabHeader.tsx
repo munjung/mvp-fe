@@ -74,7 +74,7 @@ function TabHeader({
       {/* 불러오기 버튼 */}
       {!loaded && (
         <button
-          className={`card-btn${!hasValue ? ' tab-header__btn--disabled' : ''}`}
+          className={`base-button${!hasValue ? ' tab-header__btn--disabled' : ''}`}
           onClick={handleLoad}
           disabled={!hasValue}
         >
@@ -85,10 +85,10 @@ function TabHeader({
       {/* 초기화 / 상황 보기 버튼 */}
       {loaded && (
         <>
-          <button className="card-btn" onClick={handleReset}>
+          <button className="base-button" onClick={handleReset}>
             초기화
           </button>
-          <button className="card-btn" onClick={onViewSituation}>
+          <button className="base-button" onClick={onViewSituation}>
             상황 보기
           </button>
         </>
