@@ -26,7 +26,6 @@ function ProcessTab({ card, selectedValue, onSelectChange }: Props) {
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
       />
-      <p style={{ color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p>
       {/* TODO: 처리방법 기능 구현 */}
     </section>
   )

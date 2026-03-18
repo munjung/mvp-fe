@@ -43,7 +43,6 @@ function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
       />
-      <p style={{ color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p>
       {/* TODO: 견적 산정 기능 구현 */}
 
       <BaseRadio options={radioOptions} value={radio} onChange={handleRadioChange} />

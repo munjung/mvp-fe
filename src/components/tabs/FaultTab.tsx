@@ -26,7 +26,6 @@ function FaultTab({ card, selectedValue, onSelectChange }: Props) {
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
       />
-      <p style={{ color: 'var(--text)', lineHeight: 1.7 }}>{card.description}</p>
       {/* TODO: 과실 산정 기능 구현 */}
     </section>
   )
