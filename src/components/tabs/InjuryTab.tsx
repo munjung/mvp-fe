@@ -1,6 +1,12 @@
 import type { Card } from '@api/cards'
 import TabHeader from './TabHeader'
 
+import {
+  BaseSection,
+  BaseTextarea,
+  BaseButton
+} from '@components/common'
+
 interface Props {
   card: Card
   selectedValue: string
@@ -14,7 +20,6 @@ function InjuryTab({ card, selectedValue, onSelectChange }: Props) {
         title="대인피해"
         tabType="injury"
         selectOptions={[
-          { value: 'default', label: 'Use Case를 선택하세요' },
           { value: 'case1', label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈' },
           { value: 'case2', label: 'Case 2: sample case 2' },
           { value: 'case3', label: 'Case 3: sample case 3' },
@@ -27,6 +32,10 @@ function InjuryTab({ card, selectedValue, onSelectChange }: Props) {
         onViewSituation={() => {}}
       />
       {/* TODO: 대인피해 기능 구현 */}
+      <BaseSection className="mt-20" title="대인 접수 내용">
+        <BaseTextarea></BaseTextarea>
+      </BaseSection>
+      <BaseButton className="mt-10 w100" onClick={() => console.log('클릭')}>대인 분석 실행</BaseButton>
     </section>
   )
 }

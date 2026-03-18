@@ -57,6 +57,34 @@
   /* color / background / border는 tabType별로 inline style로 주입 */
 }
 
+/* EstimateTab 좌우 분할 레이아웃 */
+.estimate-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.estimate-layout__right {
+  position: sticky;
+  top: 20px;
+}
+
+.estimate-layout__textarea {
+  min-height: 600px;
+  resize: none;
+}
+
+@media (max-width: 900px) {
+  .estimate-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .estimate-layout__right {
+    position: static;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .tab-badge {
     background: #1f2028;
