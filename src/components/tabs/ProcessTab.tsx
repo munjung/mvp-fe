@@ -1,6 +1,12 @@
 import type { Card } from '@api/cards'
 import TabHeader from './TabHeader'
 
+import {
+  BaseSection,
+  BaseButton,
+  BaseTextarea
+} from '@components/common'
+
 interface Props {
   card: Card
   selectedValue: string
@@ -26,6 +32,16 @@ function ProcessTab({ card, selectedValue, onSelectChange }: Props) {
         onViewSituation={() => {}}
       />
       {/* TODO: 처리방법 기능 구현 */}
+
+      <BaseButton>사고건 불러오기</BaseButton>
+      <BaseSection className="mt-20" title="사고건 내용 입력">
+        <BaseTextarea></BaseTextarea>
+      </BaseSection>
+
+      <BaseButton className="mt-10 w100" onClick={() => console.log('클릭')}>
+        접수 내용 분석
+      </BaseButton>
+
     </section>
   )
 }
