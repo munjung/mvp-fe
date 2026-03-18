@@ -124,32 +124,6 @@
   color: #ef4444;
 }
 
-/* 버튼 */
-.card-btn {
-  font-size: 14px;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-h);
-  cursor: pointer;
-  transition:
-    background 0.2s,
-    border-color 0.2s,
-    color 0.2s;
-}
-
-.card-btn:hover {
-  background: var(--accent-bg);
-  border-color: var(--accent-border);
-  color: var(--accent);
-}
-
-.card-btn--back {
-  margin-bottom: 24px;
-}
-
 /* 상세 페이지 */
 .detail-title {
   font-size: 28px;
@@ -195,4 +169,31 @@
   color: var(--accent);
   border-bottom-color: var(--accent);
   font-weight: 600;
+}
+
+/***** 공통 *****/
+/* 버튼 */
+.common-btn {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-h);
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+
+.common-btn:hover {
+  background: var(--accent-bg);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.common-btn--back {
+  margin-bottom: 24px;
 }

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useCards } from '@hooks/useCards'
+import { BaseButton } from '@/components/common'
 
 export default function CardList() {
   const { data: cards, isLoading, isError } = useCards()
@@ -37,15 +38,15 @@ export default function CardList() {
                 <p className="card-desc">{card.description}</p>
               </div>
               <div className="card-footer">
-                <button
-                  className="card-btn"
+                <BaseButton
+                  style={{ marginBottom: 24 }}
                   onClick={(e) => {
                     e.stopPropagation()
                     navigate(`/cards/${card.id}`)
                   }}
                 >
                   자세히 보기
-                </button>
+                </BaseButton>
               </div>
             </div>
           ))}

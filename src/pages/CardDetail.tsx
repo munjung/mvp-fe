@@ -5,6 +5,7 @@ import TabMenu from '@components/TabMenu'
 import EstimateTab from '@components/tabs/EstimateTab'
 import InjuryTab from '@components/tabs/InjuryTab'
 import FaultTab from '@components/tabs/FaultTab'
+import { BaseButton } from '@components/common'
 
 const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab]
 
@@ -20,9 +21,9 @@ function CardDetail() {
   return (
     <div className="page">
       <header className="page-header" style={{ textAlign: 'left' }}>
-        <button className="card-btn" onClick={() => navigate(-1)} style={{ marginBottom: 24 }}>
+        <BaseButton style={{ marginBottom: 24 }} onClick={() => navigate(-1)}>
           ← 목록으로
-        </button>
+        </BaseButton>
         {card && (
           <>
             <div className="card-tags">
