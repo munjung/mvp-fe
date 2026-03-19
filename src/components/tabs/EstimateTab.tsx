@@ -9,8 +9,7 @@ import {
   BaseSelect,
   BaseInput,
   BaseSection,
-  BaseFormField,
-  BaseTextarea
+  BaseFormField
 } from '@components/common'
 
 interface Props {
