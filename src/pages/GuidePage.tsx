@@ -142,20 +142,6 @@ export default function GuidePage() {
             onReset={() => setTabHeaderVal('')}
             onViewSituation={() => console.log('상황 보기')}
           />
-          <div>
-            <p>* 탭 헤더</p>
-            <BaseTabHeader
-              title="견적 산정"
-              activeKey="damage"
-              badges={badgesOptions}
-              selectOptions={tabHeaderOptions}
-              selectedValue={tabHeaderVal}
-              onSelectChange={setTabHeaderVal}
-              onLoad={() => console.log('불러오기')}
-              onReset={() => setTabHeaderVal('')}
-              onViewSituation={() => console.log('상황 보기')}
-            />
-          </div>
 
           <div>
             <p>* 팝업</p>
