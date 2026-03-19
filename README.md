@@ -6,13 +6,13 @@ npm run dev
 
 1. VS Code Extensions 설치
 
-Prettier - Code formatter
+- Prettier - Code formatter
 
-ESLint
+- ESLint
 
 2. settings.json 설정
 
-Ctrl + Shift + P → Preferences: Open User Settings (JSON)
+- Ctrl + Shift + P → Preferences: Open User Settings (JSON)
 
 ```
 {
