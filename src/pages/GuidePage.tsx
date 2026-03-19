@@ -14,6 +14,7 @@ import {
   BaseTabHeader,
   BaseFileUpload,
 } from '@components/common'
+import { alert, confirm } from '@/lib/dialog'
 
 const radioOptions = [
   { label: '전체', value: '' },
@@ -70,13 +71,26 @@ export default function GuidePage() {
   const [tabHeaderVal, setTabHeaderVal] = useState('')
   const [files, setFiles] = useState<File[]>([])
 
+  const handleAlert = async () => {
+    await alert('확인')
+  }
+
+  const handleConfirm = async () => {
+    if (await confirm('내용', { title: '타이틀' })) {
+      await alert('확인되었습니다.')
+    } else {
+      await alert('취소되었습니다.')
+    }
+  }
+
   return (
     <div className="page">
       {/* ================= 기본 컴포넌트 ================= */}
       <BaseSection title="기본 컴포넌트">
         <div className="grid-1">
-          <p>* 버튼</p>
-          <BaseButton onClick={() => console.log('클릭')}>확인</BaseButton>
+          <p>* 버튼 + Alert + Confirm</p>
+          <BaseButton onClick={handleAlert}>Alert</BaseButton>
+          <BaseButton onClick={handleConfirm}>Confirm</BaseButton>
 
           <p>* 체크박스</p>
           <BaseSection>
@@ -105,6 +119,7 @@ export default function GuidePage() {
             onChange={setMultiSelectVal}
             placeholder="선택"
           />
+
           <p>* 다중 셀렉트2</p>
           <BaseMultiSelectChip
             label="전면부"
@@ -113,6 +128,7 @@ export default function GuidePage() {
             onChange={setChips}
           />
 
+          <p>* 파일업로드</p>
           <BaseFileUpload
             value={files}
             onChange={setFiles}
