@@ -230,6 +230,29 @@
 }
 
 /* =========================
+   common - checkbox
+========================= */
+
+.base-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.base-checkbox-input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.base-checkbox-label {
+  font-size: 14px;
+  color: #222;
+}
+
+/* =========================
    common - section
 ========================= */
 .base-section {
@@ -254,6 +277,155 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* =========================
+   common - multi select
+========================= */
+.base-multi-select {
+  position: relative;
+  width: 100%;
+}
+
+.base-multi-select-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d5dce6;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 20;
+}
+
+.base-multi-select-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.base-multi-select-item:hover {
+  background: #f3f6fa;
+}
+
+/* =========================
+   common - multi chip select
+========================= */
+.base-multi-chip {
+  position: relative;
+  width: 100%;
+}
+
+.base-multi-chip-trigger {
+  appearance: none;
+  -webkit-appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid #1f9ac0;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.base-multi-chip-trigger-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.base-multi-chip-trigger-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f6f8f;
+}
+
+.base-multi-chip-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #1f9ac0;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.base-multi-chip-arrow {
+  position: relative;
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+}
+
+.base-multi-chip-arrow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 9px;
+  background: #1f9ac0;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  transform: translate(-50%, -50%) rotate(180deg);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.base-multi-chip-arrow.is-open::before {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.base-multi-chip-panel {
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px solid #d7dee8;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.base-multi-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.base-multi-chip-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid #d7dee8;
+  border-radius: 999px;
+  background: #f8fafc;
+  font-size: 13px;
+  color: #5f6b7a;
+  cursor: pointer;
+}
+
+.base-multi-chip-item.is-selected {
+  border-color: #1396b8;
+  background: #1396b8;
+  color: #fff;
+}
+
+.base-multi-chip-check {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* =========================
