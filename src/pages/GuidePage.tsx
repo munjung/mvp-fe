@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import {
   BaseButton,
+  BaseCheckbox,
   BaseRadio,
   BaseSelect,
+  BaseMultiSelect,
+  BaseMultiSelectChip,
   BaseInput,
   BaseSection,
   BaseTextarea,
@@ -20,10 +23,29 @@ const selectOptions = [
   { label: '기아', value: 'kia' },
   { label: '벤츠', value: 'benz' },
 ]
+const multiSelectOptions = [
+  { label: '앞범퍼', value: 'front-bumper' },
+  { label: '뒷범퍼', value: 'rear-bumper' },
+  { label: '문', value: 'door' },
+]
+
+const multiSelectChipOptions = [
+  { label: '프론트 범퍼(상)', value: 'front-bumper-top' },
+  { label: '프론트 범퍼(하부)', value: 'front-bumper-bottom' },
+  { label: '본넷', value: 'hood' },
+  { label: '프론트 그릴', value: 'front-grill' },
+  { label: '라디에이터', value: 'radiator' },
+  { label: '인터쿨러', value: 'intercooler' },
+  { label: '좌 헤드라이트', value: 'left-headlamp' },
+  { label: '우 헤드라이트', value: 'right-headlamp' },
+]
 
 export default function GuidePage() {
+  const [checked, setChecked] = useState(false)
   const [radioVal, setRadioVal] = useState('')
   const [selectVal, setselectVal] = useState('')
+  const [multiSelectVal, setMultiSelectVal] = useState<string[]>([])
+  const [chips, setChips] = useState<string[]>([])
   const [inputVal, setInputVal] = useState('')
   const [textVal, setTextVal] = useState('')
 
@@ -32,25 +54,43 @@ export default function GuidePage() {
       {/* ================= 기본 컴포넌트 ================= */}
       <BaseSection title="기본 컴포넌트">
         <div className="grid-1">
-          <div>
-            <p>* 버튼</p>
-            <BaseButton onClick={() => console.log('클릭')}>확인</BaseButton>
-          </div>
+          <p>* 버튼</p>
+          <BaseButton onClick={() => console.log('클릭')}>확인</BaseButton>
 
-          <div>
-            <p>* 라디오</p>
-            <BaseRadio options={radioOptions} value={radioVal} onChange={setRadioVal} />
-          </div>
-
-          <div>
-            <p>* 셀렉트</p>
-            <BaseSelect
-              options={selectOptions}
-              value={selectVal}
-              onChange={setselectVal}
-              placeholder="선택"
+          <p>* 체크박스</p>
+          <BaseSection>
+            <BaseCheckbox
+              label="📹 블랙박스 영상"
+              checked={checked}
+              onChange={(e) => setChecked(e.target.checked)}
             />
-          </div>
+          </BaseSection>
+
+          <p>* 라디오</p>
+          <BaseRadio options={radioOptions} value={radioVal} onChange={setRadioVal} />
+
+          <p>* 셀렉트</p>
+          <BaseSelect
+            options={selectOptions}
+            value={selectVal}
+            onChange={setselectVal}
+            placeholder="선택"
+          />
+
+          <p>* 다중 셀렉트</p>
+          <BaseMultiSelect
+            options={multiSelectOptions}
+            value={multiSelectVal}
+            onChange={setMultiSelectVal}
+            placeholder="선택"
+          />
+          <p>* 다중 셀렉트</p>
+          <BaseMultiSelectChip
+            label="전면부"
+            options={multiSelectChipOptions}
+            value={chips}
+            onChange={setChips}
+          />
         </div>
       </BaseSection>
 
