@@ -12,6 +12,7 @@ import {
   BaseFormField,
   BaseTab,
   BaseTabHeader,
+  BaseFileUpload,
 } from '@components/common'
 
 const radioOptions = [
@@ -67,6 +68,7 @@ export default function GuidePage() {
   const [textVal, setTextVal] = useState('')
   const [tabVal, setTabVal] = useState(0)
   const [tabHeaderVal, setTabHeaderVal] = useState('')
+  const [files, setFiles] = useState<File[]>([])
 
   return (
     <div className="page">
@@ -96,19 +98,31 @@ export default function GuidePage() {
             placeholder="선택"
           />
 
-          <p>* 다중 셀렉트</p>
+          <p>* 다중 셀렉트1</p>
           <BaseMultiSelect
             options={multiSelectOptions}
             value={multiSelectVal}
             onChange={setMultiSelectVal}
             placeholder="선택"
           />
-          <p>* 다중 셀렉트</p>
+          <p>* 다중 셀렉트2</p>
           <BaseMultiSelectChip
             label="전면부"
             options={multiSelectChipOptions}
             value={chips}
             onChange={setChips}
+          />
+
+          <BaseFileUpload
+            value={files}
+            onChange={setFiles}
+            multiple
+            maxSize={5 * 1024 * 1024}
+            accept={{
+              'image/*': ['.jpg', '.jpeg', '.png'],
+              'application/pdf': ['.pdf'],
+            }}
+            placeholder="이미지 또는 PDF 파일을 업로드하세요."
           />
 
           <p>* 탭</p>
