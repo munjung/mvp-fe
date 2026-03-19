@@ -39,7 +39,7 @@ export default function BaseConfirmDialog({
           <div className="dialog-footer">
             {showCancel && (
               <AlertDialog.Cancel asChild>
-                <BaseButton type="button" variant="secondary" onClick={onCancel}>
+                <BaseButton type="button" onClick={onCancel}>
                   {cancelText}
                 </BaseButton>
               </AlertDialog.Cancel>
