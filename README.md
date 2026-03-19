@@ -1,8 +1,8 @@
-# 🚀 React Build
+## 🚀 React Build
 
 npm run dev
 
-# 🧹 ESLint + Prettier 설정
+## 🧹 ESLint + Prettier 설정
 
 1. VS Code Extensions 설치
 
@@ -14,13 +14,16 @@ ESLint
 
 Ctrl + Shift + P → Preferences: Open User Settings (JSON)
 
+```
 {
 "editor.formatOnSave": true,
 "editor.defaultFormatter": "esbenp.prettier-vscode"
 }
+```
 
-# 📁 프로젝트 구조
+## 📁 프로젝트 구조
 
+```
 src
 ├─ main.ts # 앱 진입점 (Provider, Router 연결)
 ├─ api # 서버 통신 레이어 (axios 인스턴스, API 함수)
@@ -36,6 +39,7 @@ src
 ├─ router # 라우팅 설정
 ├─ styles # 전역 스타일
 └─ utils # 순수 유틸 함수 모음
+```
 
 # React + TypeScript + Vite
 
