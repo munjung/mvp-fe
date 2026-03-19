@@ -1,17 +1,29 @@
 @import './card.css';
 @import './tab.css';
 
-/* 기본 디자인 변수 */
+/* =========================
+   root
+========================= */
 :root {
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #ffffff;
-  --border: #e5e4e7;
+  --white: #ffffff;
+
+  --border: #e5e7eb;
+  --border-strong: #d5dce6;
+  --border-focus: #7f93ad;
+
   --code-bg: #f4f3ec;
 
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
+  --accent: #4d617d;
+  --accent-hover: #3f5168;
+  --accent-bg: #eef2f7;
+  --accent-border: #4d617d;
+  --accent-soft: #f5f7fa;
+
+  --sub-text: #7b88a1;
+  --sub-text-dark: #5b6b84;
 
   --shadow: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
 
@@ -19,25 +31,44 @@
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
-  font: 14px/145% var(--sans); /* 전체 폰트 크기 기준 */
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  font: 14px/145% var(--sans);
   letter-spacing: 0.18px;
   color: var(--text);
   background: var(--bg);
 }
 
-/* 다크모드 대응 */
+/* =========================
+   dark mode
+========================= */
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;
     --border: #2e303a;
+    --border-strong: #3a3d49;
+    --border-focus: #7f93ad;
     --code-bg: #1f2028;
-    --accent: #c084fc;
+
+    --accent: #7f93ad;
+    --accent-hover: #93a4ba;
+    --accent-bg: #2a3340;
+    --accent-border: #7f93ad;
+    --accent-soft: #202733;
+
+    --sub-text: #a5afbf;
+    --sub-text-dark: #c0cad8;
   }
 }
 
-/* 기본 리셋 */
+/* =========================
+   reset
+========================= */
 * {
   box-sizing: border-box;
 }
@@ -45,9 +76,9 @@
 html,
 body,
 #root {
+  min-height: 100%;
   margin: 0;
   padding: 0;
-  min-height: 100%;
 }
 
 body {
@@ -55,13 +86,16 @@ body {
   color: var(--text);
 }
 
-p {
+p,
+h1,
+h2,
+h3 {
   margin: 0;
 }
 
 h1,
-h2 {
-  margin: 0;
+h2,
+h3 {
   font-family: var(--heading);
 }
 
@@ -73,6 +107,6 @@ select {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
