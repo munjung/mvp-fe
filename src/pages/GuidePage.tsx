@@ -13,6 +13,7 @@ import {
   BaseTab,
   BaseTabHeader,
   BaseFileUpload,
+  BasePopup
 } from '@components/common'
 
 const radioOptions = [
@@ -69,6 +70,7 @@ export default function GuidePage() {
   const [tabVal, setTabVal] = useState(0)
   const [tabHeaderVal, setTabHeaderVal] = useState('')
   const [files, setFiles] = useState<File[]>([])
+  const [popupOpen, setPopupOpen] = useState(false)
 
   return (
     <div className="page">
@@ -140,6 +142,38 @@ export default function GuidePage() {
             onReset={() => setTabHeaderVal('')}
             onViewSituation={() => console.log('상황 보기')}
           />
+          <div>
+            <p>* 탭 헤더</p>
+            <BaseTabHeader
+              title="견적 산정"
+              activeKey="damage"
+              badges={badgesOptions}
+              selectOptions={tabHeaderOptions}
+              selectedValue={tabHeaderVal}
+              onSelectChange={setTabHeaderVal}
+              onLoad={() => console.log('불러오기')}
+              onReset={() => setTabHeaderVal('')}
+              onViewSituation={() => console.log('상황 보기')}
+            />
+          </div>
+
+          <div>
+            <p>* 팝업</p>
+            <BaseButton onClick={() => setPopupOpen(true)}>팝업 열기</BaseButton>
+            <BasePopup 
+              show={popupOpen}
+              title='팝업 타이틀 입력'
+              width='35%'
+              height='70%'
+              showCloseButton={true} // 우측 상단 x 버튼
+              showConfirm={true} // 하단 확인 버튼
+              showCancel={true} // 하단 취소 버튼
+              onCancel={() => setPopupOpen(false)}
+              onConfirm={() => setPopupOpen(false)}
+              onClose={() => setPopupOpen(false)}>
+              <p>팝업 내용 입력</p>
+            </BasePopup>
+          </div>
         </div>
       </BaseSection>
 
