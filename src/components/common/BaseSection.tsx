@@ -8,11 +8,11 @@ interface BaseSectionProps {
 
 export default function BaseSection({ title, children, className = '' }: BaseSectionProps) {
   return (
-    <section className={`base-section ${className}`.trim()}>
+    <section className={['base-section', className].join(' ').trim()}>
       {title && (
-        <div className="base-section-header">
+        <header className="base-section-header">
           <h3 className="base-section-title">{title}</h3>
-        </div>
+        </header>
       )}
       <div className="base-section-body">{children}</div>
     </section>
