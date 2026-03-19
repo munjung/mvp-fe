@@ -10,6 +10,8 @@ import {
   BaseSection,
   BaseTextarea,
   BaseFormField,
+  BaseTab,
+  BaseTabHeader,
 } from '@components/common'
 
 const radioOptions = [
@@ -23,6 +25,7 @@ const selectOptions = [
   { label: '기아', value: 'kia' },
   { label: '벤츠', value: 'benz' },
 ]
+
 const multiSelectOptions = [
   { label: '앞범퍼', value: 'front-bumper' },
   { label: '뒷범퍼', value: 'rear-bumper' },
@@ -40,6 +43,20 @@ const multiSelectChipOptions = [
   { label: '우 헤드라이트', value: 'right-headlamp' },
 ]
 
+const tabs = ['견적 산정', '대인 피해', '과실 산정', '처리 방법', '기타']
+
+const tabHeaderOptions = [
+  { label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case1' },
+  { label: 'Case 2: sample case 2', value: 'case2' },
+  { label: 'Case 2: sample case 3', value: 'case3' },
+]
+
+const badgesOptions = [
+  { key: 'estimate', label: '견적 산정', color: '#4a3c98', bg: '#f0edff' },
+  { key: 'damage', label: '대인 피해', color: '#c92a2a', bg: '#fff5f5' },
+  { key: 'fault', label: '과실 산정', color: '#2b8a3e', bg: '#e6f4ea' },
+]
+
 export default function GuidePage() {
   const [checked, setChecked] = useState(false)
   const [radioVal, setRadioVal] = useState('')
@@ -48,6 +65,8 @@ export default function GuidePage() {
   const [chips, setChips] = useState<string[]>([])
   const [inputVal, setInputVal] = useState('')
   const [textVal, setTextVal] = useState('')
+  const [tabVal, setTabVal] = useState(0)
+  const [tabHeaderVal, setTabHeaderVal] = useState('')
 
   return (
     <div className="page">
@@ -90,6 +109,22 @@ export default function GuidePage() {
             options={multiSelectChipOptions}
             value={chips}
             onChange={setChips}
+          />
+
+          <p>* 탭</p>
+          <BaseTab tabs={tabs} active={tabVal} onChange={(index) => setTabVal(index)}></BaseTab>
+
+          <p>* 탭 헤더</p>
+          <BaseTabHeader
+            title="견적 산정"
+            activeKey="damage"
+            badges={badgesOptions}
+            selectOptions={tabHeaderOptions}
+            selectedValue={tabHeaderVal}
+            onSelectChange={setTabHeaderVal}
+            onLoad={() => console.log('불러오기')}
+            onReset={() => setTabHeaderVal('')}
+            onViewSituation={() => console.log('상황 보기')}
           />
         </div>
       </BaseSection>
