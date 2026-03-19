@@ -44,7 +44,6 @@ export default function BaseTabHeader({
 
   const hasValue = selectedValue !== ''
 
-  // value='' 인 항목은 placeholder로 분리
   const placeholder = selectOptions.find(o => o.value === '')?.label ?? '선택'
   const filteredOptions = selectOptions.filter(o => o.value !== '')
 
@@ -60,10 +59,8 @@ export default function BaseTabHeader({
 
   return (
     <div className="tab-header">
-      {/* 탭 이름 */}
       <span className="tab-header__title">• {title} |</span>
 
-      {/* 셀렉트박스 */}
       {filteredOptions.length > 0 && (
         <BaseSelect
           options={filteredOptions}
@@ -73,7 +70,6 @@ export default function BaseTabHeader({
         />
       )}
 
-      {/* 불러오기 버튼 */}
       {!loaded && (
         <button
           className={`base-button${!hasValue ? ' tab-header__btn--disabled' : ''}`}
@@ -84,7 +80,6 @@ export default function BaseTabHeader({
         </button>
       )}
 
-      {/* 초기화 / 상황 보기 버튼 */}
       {loaded && (
         <>
           <button className="base-button" onClick={handleReset}>
@@ -96,7 +91,6 @@ export default function BaseTabHeader({
         </>
       )}
 
-      {/* 우측 탭 구분 배지 */}
       <div className="tab-header__badges">
         {badges.map(badge => {
           const active = badge.key === activeKey

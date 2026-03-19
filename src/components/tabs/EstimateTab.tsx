@@ -9,7 +9,8 @@ import {
   BaseSelect,
   BaseInput,
   BaseSection,
-  BaseFormField
+  BaseFormField,
+  BasePopup
 } from '@components/common'
 
 interface Props {
@@ -39,33 +40,39 @@ const selectOptions = [
   { label: '벤츠', value: 'benz' },
 ]
 
+const selectCaseOptions = [
+  { label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case1' },
+  { label: 'Case 2: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case2' },
+  { label: 'Case 3: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case3' }
+]
+
 function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
   const [radioVal, setRadioVal] = useState('')
   const [radioVal2, setRadioVal2] = useState('')
   const [selectVal, setselectVal] = useState('')
   const [inputVal, setInputVal] = useState('')
+  const [popupOpen, setPopupOpen] = useState(false)
 
   // [FUNC] 라디오 버튼 변경 핸들러
   const handleRadioChange = (value: string) => {
     setRadioVal(value)
   }
 
+  const selectedCase = selectCaseOptions.find(
+  (option) => option.value === selectedValue
+)
+
   return (
     <section>
       <TabHeader
         title="견적 산정"
         tabType="estimate"
-        selectOptions={[
-          { value: 'case1', label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈' },
-          { value: 'case2', label: 'Case 2: sample case 2' },
-          { value: 'case3', label: 'Case 3: sample case 3' },
-          { value: 'case4', label: 'Case 4: sample case 4' },
-        ]}
+        selectOptions={selectCaseOptions}
         selectedValue={selectedValue}
         onSelectChange={onSelectChange}
         onLoad={() => {}}
         onReset={() => onSelectChange('')}
-        onViewSituation={() => {}}
+        onViewSituation={() => setPopupOpen(true)}
       />
       {/* TODO: 견적 산정 기능 구현 */}
 
@@ -141,6 +148,24 @@ function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
           </BaseSection>
         </div>
       </div>
+
+      <BasePopup
+        show={popupOpen}
+        title={selectedCase?.label}
+        width='35%'
+        height='70%'
+        showCloseButton={true}
+        showConfirm={false}
+        showCancel={false}
+        onCancel={() => setPopupOpen(false)}
+        onConfirm={() => setPopupOpen(false)}
+        onClose={() => setPopupOpen(false)}>
+          <BaseSection className="mt-10">
+          <p>🚗 사고 상황</p>
+          </BaseSection>
+          
+      </BasePopup>
+
     </section>
   )
 }
