@@ -13,7 +13,7 @@ interface Props {
   onSelectChange: (value: string) => void
 }
 
-function InjuryTab({ card, selectedValue, onSelectChange }: Props) {
+function InjuryTab({ selectedValue, onSelectChange }: Props) {
   return (
     <section>
       <TabHeader

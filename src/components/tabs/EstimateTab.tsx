@@ -46,7 +46,7 @@ const selectCaseOptions = [
   { label: 'Case 3: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case3' }
 ]
 
-function EstimateTab({ card, selectedValue, onSelectChange }: Props) {
+function EstimateTab({ selectedValue, onSelectChange }: Props) {
   const [radioVal, setRadioVal] = useState('')
   const [radioVal2, setRadioVal2] = useState('')
   const [selectVal, setselectVal] = useState('')
