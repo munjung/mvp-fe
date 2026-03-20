@@ -33,7 +33,7 @@ const selectOptions = [
   { label: '벤츠', value: 'benz' },
 ]
 
-function FaultTab({ card, selectedValue, onSelectChange }: Props) {
+function FaultTab({ selectedValue, onSelectChange }: Props) {
   const [radioVal, setRadioVal] = useState('')
   const [selectVal, setselectVal] = useState('')
   const [textVal, setTextVal] = useState('')

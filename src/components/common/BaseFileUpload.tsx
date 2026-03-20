@@ -140,13 +140,7 @@ export default function BaseFileUpload({
             >
               <span className="base-file-upload__name">{file.name}</span>
 
-              <BaseButton
-                type="button"
-                size="sm"
-                variant="secondary"
-                disabled={disabled}
-                onClick={() => handleRemove(index)}
-              >
+              <BaseButton type="button" disabled={disabled} onClick={() => handleRemove(index)}>
                 삭제
               </BaseButton>
             </li>

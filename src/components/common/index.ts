@@ -1,7 +1,6 @@
 export { default as BaseTab } from './BaseTab'
 export { default as BaseTabHeader } from './BaseTabHeader'
 export type { BadgeMeta } from './BaseTabHeader'
-
 export { default as BaseButton } from './BaseButton'
 export { default as BaseCheckbox } from './BaseCheckbox'
 export { default as BaseRadio } from './BaseRadio'
@@ -13,3 +12,4 @@ export { default as BaseInput } from './BaseInput'
 export { default as BaseFormField } from './BaseFormField'
 export { default as BaseTextarea } from './BaseTextarea'
 export { default as BaseFileUpload } from './BaseFileUpload'
+export { default as BasePopup } from './BasePopup'

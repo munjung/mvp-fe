@@ -1,24 +1,44 @@
-# React Build
+## 🚀 React Build
 
 npm run dev
 
-# ESLint + Prettier 적용
+## 🧹 ESLint + Prettier 설정
 
-1. VS Code Extensions
+1. VS Code Extensions 설치
 
 - Prettier - Code formatter
+
 - ESLint
 
-2. settings.json 추가
-   Ctrl + Shift + P → Preferences: Open User Settings(JSON)
+2. settings.json 설정
 
-아래 내용 추가
+- Ctrl + Shift + P → Preferences: Open User Settings (JSON)
 
-```js
+```
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+"editor.formatOnSave": true,
+"editor.defaultFormatter": "esbenp.prettier-vscode"
 }
+```
+
+## 📁 프로젝트 구조
+
+```
+src
+├─ main.ts # 앱 진입점 (Provider, Router 연결)
+├─ api # 서버 통신 레이어 (axios 인스턴스, API 함수)
+├─ assets # 이미지, 아이콘 등 정적 리소스
+├─ components # 재사용 UI 컴포넌트
+│ ├─ common # 공통 컴포넌트 (Button, Select 등)
+│ └─ tabs # 탭 관련 컴포넌트
+├─ hooks # 커스텀 훅 (상태 및 로직 분리)
+├─ layouts # 페이지 레이아웃 (RootLayout 등)
+├─ lib # 기능 호출 API (alert, confirm 등 인터페이스)
+├─ pages # 라우트 단위 페이지
+├─ providers # 전역 상태 및 UI 실행 (Dialog, Context 등)
+├─ router # 라우팅 설정
+├─ styles # 전역 스타일
+└─ utils # 순수 유틸 함수 모음
 ```
 
 # React + TypeScript + Vite

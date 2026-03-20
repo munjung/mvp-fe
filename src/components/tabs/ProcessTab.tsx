@@ -13,7 +13,7 @@ interface Props {
   onSelectChange: (value: string) => void
 }
 
-function ProcessTab({ card, selectedValue, onSelectChange }: Props) {
+function ProcessTab({ selectedValue, onSelectChange }: Props) {
   return (
     <section>
       <TabHeader
