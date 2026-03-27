@@ -10,7 +10,9 @@ import {
   BaseInput,
   BaseSection,
   BaseFormField,
-  BasePopup
+  BasePopup,
+  BaseMultiSelectChip,
+  BaseFileUpload,
 } from '@components/common'
 
 interface Props {
@@ -43,7 +45,29 @@ const selectOptions = [
 const selectCaseOptions = [
   { label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case1' },
   { label: 'Case 2: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case2' },
-  { label: 'Case 3: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case3' }
+  { label: 'Case 3: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case3' },
+]
+
+const multiSelectChipOptions1 = [
+  { label: '프론트 범퍼(상)', value: '프론트 범퍼(상)' },
+  { label: '프론트 범퍼(하부)', value: '프론트 범퍼(하부)' },
+  { label: '본넷', value: '본넷' },
+  { label: '프론트 그릴', value: '프론트 그릴' },
+  { label: '라디에이터', value: '라디에이터' },
+  { label: '인터쿨러', value: '인터쿨러' },
+  { label: '좌 헤드라이트', value: '좌 헤드라이트' },
+  { label: '우 헤드라이트', value: '우 헤드라이트' },
+]
+
+const multiSelectChipOptions2 = [
+  { label: '프론트 범퍼(상)', value: '프론트 범퍼(상)' },
+  { label: '프론트 범퍼(하부)', value: '프론트 범퍼(하부)' },
+  { label: '본넷', value: '본넷' },
+  { label: '프론트 그릴', value: '프론트 그릴' },
+  { label: '라디에이터', value: '라디에이터' },
+  { label: '인터쿨러', value: '인터쿨러' },
+  { label: '좌 헤드라이트', value: '좌 헤드라이트' },
+  { label: '우 헤드라이트', value: '우 헤드라이트 ' },
 ]
 
 function EstimateTab({ selectedValue, onSelectChange }: Props) {
@@ -52,15 +76,16 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   const [selectVal, setselectVal] = useState('')
   const [inputVal, setInputVal] = useState('')
   const [popupOpen, setPopupOpen] = useState(false)
+  const [chips1, setChips1] = useState<string[]>([]) // 파손부위 전면부
+  const [chips2, setChips2] = useState<string[]>([]) // 파손부위 후면부
+  const [files, setFiles] = useState<File[]>([]) // 사고사진
 
   // [FUNC] 라디오 버튼 변경 핸들러
   const handleRadioChange = (value: string) => {
     setRadioVal(value)
   }
 
-  const selectedCase = selectCaseOptions.find(
-  (option) => option.value === selectedValue
-)
+  const selectedCase = selectCaseOptions.find((option) => option.value === selectedValue)
 
   return (
     <section>
@@ -113,13 +138,37 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
           </BaseSection>
 
           <BaseSection className="mt-20" title="사고 사진">
-            <p>사고사진</p>
+            <BaseFileUpload
+              value={files}
+              onChange={setFiles}
+              multiple
+              maxSize={5 * 1024 * 1024}
+              accept={{
+                'image/*': ['.jpg', '.jpeg', '.png'],
+                'application/pdf': ['.pdf'],
+              }}
+              placeholder="이미지 또는 PDF 파일을 업로드하세요."
+            />
           </BaseSection>
 
           <BaseSection className="mt-20" title="파손 부위">
             <BaseFormField className="w100">
-              <p>라디오 리스트... 추가필요</p>
-              <BaseSelect options={[]} value={''} onChange={() => {}} placeholder="선택" />
+              <p>
+                {chips1.join(', ')}
+                {chips2.join(', ')}
+              </p>
+              <BaseMultiSelectChip
+                label="전면부"
+                options={multiSelectChipOptions1}
+                value={chips1}
+                onChange={setChips1}
+              />
+              <BaseMultiSelectChip
+                label="후면부"
+                options={multiSelectChipOptions2}
+                value={chips2}
+                onChange={setChips2}
+              />
             </BaseFormField>
           </BaseSection>
 
@@ -152,20 +201,19 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
       <BasePopup
         show={popupOpen}
         title={selectedCase?.label}
-        width='35%'
-        height='70%'
+        width="35%"
+        height="70%"
         showCloseButton={true}
         showConfirm={false}
         showCancel={false}
         onCancel={() => setPopupOpen(false)}
         onConfirm={() => setPopupOpen(false)}
-        onClose={() => setPopupOpen(false)}>
-          <BaseSection className="mt-10">
+        onClose={() => setPopupOpen(false)}
+      >
+        <BaseSection className="mt-10">
           <p>🚗 사고 상황</p>
-          </BaseSection>
-          
+        </BaseSection>
       </BasePopup>
-
     </section>
   )
 }
