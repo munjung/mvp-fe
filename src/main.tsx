@@ -6,7 +6,13 @@ import { router } from './router'
 import './styles/main.css'
 import DialogProvider from './providers/DialogProvider'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+    },
+  },
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

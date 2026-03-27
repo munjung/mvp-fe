@@ -1,6 +1,7 @@
 // AI 자동차 손해사정 > 견적 산정 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
+import { useBrands } from '@/hooks/useEstimate'
 import TabHeader from './TabHeader'
 
 import {
@@ -80,11 +81,21 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   const [chips2, setChips2] = useState<string[]>([]) // 파손부위 후면부
   const [files, setFiles] = useState<File[]>([]) // 사고사진
 
+  // [DATA] 차량정보
+  const { data: brands } = useBrands()
+
+  const brandsOptions =
+    brands?.data?.map((b) => ({
+      label: b.name,
+      value: b.id,
+    })) ?? []
+
   // [FUNC] 라디오 버튼 변경 핸들러
   const handleRadioChange = (value: string) => {
     setRadioVal(value)
   }
 
+  // [FUNC] 선택된 케이스 > 상황 보기 팝업
   const selectedCase = selectCaseOptions.find((option) => option.value === selectedValue)
 
   return (
@@ -112,7 +123,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
             <div className="grid-2">
               <BaseFormField label="제조사" required>
                 <BaseSelect
-                  options={selectOptions}
+                  options={brandsOptions}
                   value={selectVal}
                   onChange={setselectVal}
                   placeholder="선택"
