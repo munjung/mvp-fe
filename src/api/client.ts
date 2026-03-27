@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const client = axios.create({
+const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 10000,
   headers: {
@@ -8,4 +8,4 @@ const client = axios.create({
   },
 })
 
-export default client
+export default apiClient
