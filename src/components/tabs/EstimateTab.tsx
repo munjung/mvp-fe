@@ -1,7 +1,7 @@
 // AI 자동차 손해사정 > 견적 산정 탭
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Card } from '@api/cards'
-import { useBrands } from '@/hooks/useEstimate'
+import { useBrands, useDamages } from '@/hooks/useEstimate'
 import TabHeader from './TabHeader'
 
 import {
@@ -37,38 +37,10 @@ const radioOptions2 = [
   { label: '전손 추정', value: 'd' },
 ]
 
-const selectOptions = [
-  { label: '현대', value: 'hyundai' },
-  { label: '기아', value: 'kia' },
-  { label: '벤츠', value: 'benz' },
-]
-
 const selectCaseOptions = [
   { label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case1' },
   { label: 'Case 2: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case2' },
   { label: 'Case 3: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case3' },
-]
-
-const multiSelectChipOptions1 = [
-  { label: '프론트 범퍼(상)', value: '프론트 범퍼(상)' },
-  { label: '프론트 범퍼(하부)', value: '프론트 범퍼(하부)' },
-  { label: '본넷', value: '본넷' },
-  { label: '프론트 그릴', value: '프론트 그릴' },
-  { label: '라디에이터', value: '라디에이터' },
-  { label: '인터쿨러', value: '인터쿨러' },
-  { label: '좌 헤드라이트', value: '좌 헤드라이트' },
-  { label: '우 헤드라이트', value: '우 헤드라이트' },
-]
-
-const multiSelectChipOptions2 = [
-  { label: '프론트 범퍼(상)', value: '프론트 범퍼(상)' },
-  { label: '프론트 범퍼(하부)', value: '프론트 범퍼(하부)' },
-  { label: '본넷', value: '본넷' },
-  { label: '프론트 그릴', value: '프론트 그릴' },
-  { label: '라디에이터', value: '라디에이터' },
-  { label: '인터쿨러', value: '인터쿨러' },
-  { label: '좌 헤드라이트', value: '좌 헤드라이트' },
-  { label: '우 헤드라이트', value: '우 헤드라이트 ' },
 ]
 
 function EstimateTab({ selectedValue, onSelectChange }: Props) {
@@ -83,12 +55,40 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
   // [DATA] 차량정보
   const { data: brands } = useBrands()
-
   const brandsOptions =
     brands?.data?.map((b) => ({
       label: b.name,
       value: b.id,
     })) ?? []
+
+  // [DATA] 파손부위
+  const { data: damages } = useDamages()
+
+  const [damagesFrontOptions, setDamagesFrontOptions] = useState([])
+  const [damagesBackOptions, setDamagesBackOptions] = useState([])
+
+  useEffect(() => {
+    console.log('damages::', damages?.data)
+    if (damages?.data) {
+      damages.data.forEach((d) => {
+        if (d.category === '전면부') {
+          setDamagesFrontOptions(
+            d?.part?.map((p) => ({
+              label: p.name,
+              value: p.id,
+            })) ?? [],
+          )
+        } else if (d.category === '후면부') {
+          setDamagesBackOptions(
+            d?.part?.map((p) => ({
+              label: p.name,
+              value: p.id,
+            })) ?? [],
+          )
+        }
+      })
+    }
+  }, [damages])
 
   // [FUNC] 라디오 버튼 변경 핸들러
   const handleRadioChange = (value: string) => {
@@ -170,13 +170,13 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
               </p>
               <BaseMultiSelectChip
                 label="전면부"
-                options={multiSelectChipOptions1}
+                options={damagesFrontOptions}
                 value={chips1}
                 onChange={setChips1}
               />
               <BaseMultiSelectChip
                 label="후면부"
-                options={multiSelectChipOptions2}
+                options={damagesBackOptions}
                 value={chips2}
                 onChange={setChips2}
               />
