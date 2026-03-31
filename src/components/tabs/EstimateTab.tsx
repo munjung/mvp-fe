@@ -1,5 +1,6 @@
 // AI 자동차 손해사정 > 견적 산정 탭
-import { useEffect, useState } from 'react'
+import { useMemo, useState } from 'react'
+import type { ChangeEvent } from 'react'
 import type { Card } from '@api/cards'
 import { useBrands, useDamages } from '@/hooks/useEstimate'
 import TabHeader from './TabHeader'
@@ -22,81 +23,108 @@ interface Props {
   onSelectChange: (value: string) => void
 }
 
-// [DATA] 라디오 버튼 옵션
-const radioOptions = [
+type SelectOption = {
+  label: string
+  value: string
+}
+
+type RadioOption = {
+  label: string
+  value: string
+}
+
+type BrandItem = {
+  id: number | string
+  name: string
+}
+
+type DamagePart = {
+  id: number | string
+  name: string
+}
+
+type DamageItem = {
+  category: string
+  part?: DamagePart[]
+}
+
+const vehicleTypeOptions: RadioOption[] = [
   { label: '자사차량(A)', value: 'a' },
   { label: '타사차량(B)', value: 'b' },
   { label: '국산', value: 'domestic' },
   { label: '외산', value: 'imported' },
 ]
 
-const radioOptions2 = [
+const damageLevelOptions: RadioOption[] = [
   { label: '경미', value: 'a' },
   { label: '중간', value: 'b' },
   { label: '심각', value: 'c' },
   { label: '전손 추정', value: 'd' },
 ]
 
-const selectCaseOptions = [
+const selectCaseOptions: SelectOption[] = [
   { label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case1' },
   { label: 'Case 2: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case2' },
   { label: 'Case 3: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈', value: 'case3' },
 ]
 
 function EstimateTab({ selectedValue, onSelectChange }: Props) {
-  const [radioVal, setRadioVal] = useState('')
-  const [radioVal2, setRadioVal2] = useState('')
-  const [selectVal, setselectVal] = useState('')
-  const [inputVal, setInputVal] = useState('')
+  const [vehicleType, setVehicleType] = useState('')
+  const [damageLevel, setDamageLevel] = useState('')
+  const [brandValue, setBrandValue] = useState('')
+  const [modelValue, setModelValue] = useState('')
+  const [yearValue, setYearValue] = useState('')
+  const [mileageValue, setMileageValue] = useState('')
   const [popupOpen, setPopupOpen] = useState(false)
-  const [chips1, setChips1] = useState<string[]>([]) // 파손부위 전면부
-  const [chips2, setChips2] = useState<string[]>([]) // 파손부위 후면부
-  const [files, setFiles] = useState<File[]>([]) // 사고사진
+  const [frontChips, setFrontChips] = useState<string[]>([])
+  const [backChips, setBackChips] = useState<string[]>([])
+  const [files, setFiles] = useState<File[]>([])
 
-  // [DATA] 차량정보
   const { data: brands } = useBrands()
-  const brandsOptions =
-    brands?.data?.map((b) => ({
-      label: b.name,
-      value: b.id,
-    })) ?? []
-
-  // [DATA] 파손부위
   const { data: damages } = useDamages()
 
-  const [damagesFrontOptions, setDamagesFrontOptions] = useState([])
-  const [damagesBackOptions, setDamagesBackOptions] = useState([])
+  const brandOptions = useMemo<SelectOption[]>(() => {
+    const brandList = (brands?.data as BrandItem[] | undefined) ?? []
 
-  useEffect(() => {
-    console.log('damages::', damages?.data)
-    if (damages?.data) {
-      damages.data.forEach((d) => {
-        if (d.category === '전면부') {
-          setDamagesFrontOptions(
-            d?.part?.map((p) => ({
-              label: p.name,
-              value: p.id,
-            })) ?? [],
-          )
-        } else if (d.category === '후면부') {
-          setDamagesBackOptions(
-            d?.part?.map((p) => ({
-              label: p.name,
-              value: p.id,
-            })) ?? [],
-          )
-        }
-      })
+    return brandList.map((brand) => ({
+      label: brand.name,
+      value: String(brand.id),
+    }))
+  }, [brands?.data])
+
+  const { frontOptions, backOptions } = useMemo(() => {
+    const damageList = (damages?.data as DamageItem[] | undefined) ?? []
+
+    const result = {
+      frontOptions: [] as SelectOption[],
+      backOptions: [] as SelectOption[],
     }
-  }, [damages])
 
-  // [FUNC] 라디오 버튼 변경 핸들러
-  const handleRadioChange = (value: string) => {
-    setRadioVal(value)
+    damageList.forEach((damage) => {
+      const mappedParts: SelectOption[] =
+        damage.part?.map((part) => ({
+          label: part.name,
+          value: String(part.id),
+        })) ?? []
+
+      if (damage.category === '전면부') {
+        result.frontOptions = mappedParts
+      }
+
+      if (damage.category === '후면부') {
+        result.backOptions = mappedParts
+      }
+    })
+
+    return result
+  }, [damages?.data])
+
+  const handleMileageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setMileageValue(e.target.value)
   }
 
-  // [FUNC] 선택된 케이스 > 상황 보기 팝업
   const selectedCase = selectCaseOptions.find((option) => option.value === selectedValue)
+  const selectedDamageText = [...frontChips, ...backChips].join(', ')
 
   return (
     <section>
@@ -110,40 +138,42 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         onReset={() => onSelectChange('')}
         onViewSituation={() => setPopupOpen(true)}
       />
-      {/* TODO: 견적 산정 기능 구현 */}
 
       <div className="estimate-layout mt-20">
-        {/* 좌측: 입력 폼 */}
         <div className="estimate-layout__left">
           <BaseSection title="차량 정보">
-            {/* 차량 타입 */}
-            <BaseRadio options={radioOptions} value={radioVal} onChange={handleRadioChange} />
+            <BaseRadio options={vehicleTypeOptions} value={vehicleType} onChange={setVehicleType} />
 
-            {/* 2열 */}
             <div className="grid-2">
               <BaseFormField label="제조사" required>
                 <BaseSelect
-                  options={brandsOptions}
-                  value={selectVal}
-                  onChange={setselectVal}
+                  options={brandOptions}
+                  value={brandValue}
+                  onChange={setBrandValue}
                   placeholder="선택"
                 />
               </BaseFormField>
 
               <BaseFormField label="모델" required>
-                <BaseSelect options={[]} value={''} onChange={() => {}} placeholder="선택" />
+                <BaseSelect
+                  options={[]}
+                  value={modelValue}
+                  onChange={setModelValue}
+                  placeholder="선택"
+                />
               </BaseFormField>
 
               <BaseFormField label="연식">
-                <BaseSelect options={[]} value={''} onChange={() => {}} placeholder="선택" />
+                <BaseSelect
+                  options={[]}
+                  value={yearValue}
+                  onChange={setYearValue}
+                  placeholder="선택"
+                />
               </BaseFormField>
 
               <BaseFormField label="주행거리 (km)">
-                <BaseInput
-                  value={inputVal}
-                  onChange={(e) => setInputVal(e.target.value)}
-                  placeholder="입력"
-                />
+                <BaseInput value={mileageValue} onChange={handleMileageChange} placeholder="입력" />
               </BaseFormField>
             </div>
           </BaseSection>
@@ -164,27 +194,26 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
           <BaseSection className="mt-20" title="파손 부위">
             <BaseFormField className="w100">
-              <p>
-                {chips1.join(', ')}
-                {chips2.join(', ')}
-              </p>
+              <p>{selectedDamageText}</p>
+
               <BaseMultiSelectChip
                 label="전면부"
-                options={damagesFrontOptions}
-                value={chips1}
-                onChange={setChips1}
+                options={frontOptions}
+                value={frontChips}
+                onChange={setFrontChips}
               />
+
               <BaseMultiSelectChip
                 label="후면부"
-                options={damagesBackOptions}
-                value={chips2}
-                onChange={setChips2}
+                options={backOptions}
+                value={backChips}
+                onChange={setBackChips}
               />
             </BaseFormField>
           </BaseSection>
 
-          <BaseSection className="mt-20" title="차량 정보">
-            <BaseRadio options={radioOptions2} value={radioVal2} onChange={setRadioVal2} />
+          <BaseSection className="mt-20" title="파손 정도">
+            <BaseRadio options={damageLevelOptions} value={damageLevel} onChange={setDamageLevel} />
           </BaseSection>
 
           <BaseButton className="mt-10 w100" onClick={() => console.log('클릭')}>
@@ -192,17 +221,19 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
           </BaseButton>
         </div>
 
-        {/* 우측: 결과 textarea */}
         <div className="estimate-layout__right">
           <BaseSection title="예상 견적">
             <p></p>
           </BaseSection>
+
           <BaseSection className="mt-20" title="세부 산출">
             <p></p>
           </BaseSection>
+
           <BaseSection className="mt-20" title="AI 분석">
             <p></p>
           </BaseSection>
+
           <BaseSection className="mt-20" title="견적 산정 완료">
             <p></p>
           </BaseSection>
@@ -211,7 +242,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
       <BasePopup
         show={popupOpen}
-        title={selectedCase?.label}
+        title={selectedCase?.label ?? '사고 상황'}
         width="35%"
         height="70%"
         showCloseButton={true}
