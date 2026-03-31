@@ -1,3 +1,4 @@
+// AI 자동차 손해사정 > 과실 산정 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
 import TabHeader from './TabHeader'
@@ -5,6 +6,7 @@ import TabHeader from './TabHeader'
 import {
   BaseButton,
   BaseRadio,
+  BaseFileUpload,
   BaseSelect,
   BaseSection,
   BaseFormField,
@@ -23,8 +25,8 @@ const radioOptions = [
   { label: '사고 전체 모습', value: 'a' },
   { label: '파손 부위 근접', value: 'b' },
   { label: '주변 도로 상황', value: 'c' },
-  { label: '차량 위치/각도', value: 'c' },
-  { label: '상대 번호판', value: 'c' },
+  { label: '차량 위치/각도', value: 'd' },
+  { label: '상대 번호판', value: 'e' },
 ]
 
 const selectOptions = [
@@ -38,11 +40,13 @@ function FaultTab({ selectedValue, onSelectChange }: Props) {
   const [selectVal, setselectVal] = useState('')
   const [textVal, setTextVal] = useState('')
   const [checked, setChecked] = useState(false)
+  const [files, setFiles] = useState<File[]>([])
 
   // [FUNC] 라디오 버튼 변경 핸들러
   const handleRadioChange = (value: string) => {
     setRadioVal(value)
   }
+
   return (
     <section>
       <TabHeader
@@ -69,9 +73,47 @@ function FaultTab({ selectedValue, onSelectChange }: Props) {
               <BaseSelect options={selectOptions} value={selectVal} onChange={setselectVal} />
             </BaseFormField>
           </BaseSection>
-
+          <BaseSection className="mt-10" title="사고 상황">
+            <div className="grid-2">
+              <BaseFormField label="도로">
+                <BaseSelect
+                  options={selectOptions}
+                  value={selectVal}
+                  onChange={setselectVal}
+                  placeholder="선택"
+                />
+              </BaseFormField>
+              <BaseFormField label="날씨">
+                <BaseSelect
+                  options={selectOptions}
+                  value={selectVal}
+                  onChange={setselectVal}
+                  placeholder="선택"
+                />
+              </BaseFormField>
+              <BaseFormField label="신호">
+                <BaseSelect
+                  options={selectOptions}
+                  value={selectVal}
+                  onChange={setselectVal}
+                  placeholder="선택"
+                />
+              </BaseFormField>
+            </div>
+          </BaseSection>
           <BaseSection className="mt-10" title="사고 현장 사진">
             <BaseRadio options={radioOptions} value={radioVal} onChange={handleRadioChange} />
+            <BaseFileUpload
+              value={files}
+              onChange={setFiles}
+              multiple
+              maxSize={5 * 1024 * 1024}
+              accept={{
+                'image/*': ['.jpg', '.jpeg', '.png'],
+                'application/pdf': ['.pdf'],
+              }}
+              placeholder="클릭하여 사고 사진 업로드"
+            />
           </BaseSection>
 
           <BaseSection className="mt-10" title="진술">
@@ -126,7 +168,15 @@ function FaultTab({ selectedValue, onSelectChange }: Props) {
         </div>
         {/* 우측: 결과 textarea */}
         <div className="estimate-layout__right">
-          <p>사고 유형과 상황을 입력 후 실행하세요</p>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '100px',
+            }}
+          >
+            사고 유형과 상황을 입력 후 실행하세요
+          </div>
         </div>
       </div>
     </section>

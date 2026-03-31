@@ -105,13 +105,17 @@
    EstimateTab 좌우 분할 레이아웃
 ========================= */
 .estimate-layout {
-  display: grid;
+  /* display: grid; */
+  display: flex;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   align-items: start;
 }
 
+.estimate-layout__left,
 .estimate-layout__right {
+  flex: 1;
+  overflow-y: auto;
   position: sticky;
   top: 20px;
 }
