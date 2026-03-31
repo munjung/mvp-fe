@@ -2,7 +2,7 @@
 import { useMemo, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import type { Card } from '@api/cards'
-import { useBrands, useDamages } from '@/hooks/useEstimate'
+import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
 import TabHeader from './TabHeader'
 
 import {
@@ -15,6 +15,7 @@ import {
   BasePopup,
   BaseMultiSelectChip,
   BaseFileUpload,
+  BaseChat,
 } from '@components/common'
 
 interface Props {
@@ -126,6 +127,42 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   const selectedCase = selectCaseOptions.find((option) => option.value === selectedValue)
   const selectedDamageText = [...frontChips, ...backChips].join(', ')
 
+  // -----------------------
+  //  AI 분석
+  // -----------------------
+  type ChatParams = {
+    brandCd: string
+    damageCds: string[]
+  }
+
+  const [searchForm, setSearchForm] = useState<ChatParams>({
+    brandCd: '',
+    damageCds: [],
+  })
+
+  // AI분석 동작용
+  const [chatParams, setChatParams] = useState<ChatParams | null>(null)
+  const [chatStart, setChatStart] = useState(false)
+
+  const { data: returnChatData } = useChats(chatParams, chatStart)
+
+  const handleChangeBrand = (value: string) => {
+    setBrandValue(value)
+    setSearchForm((prev) => ({
+      ...prev,
+      brandCd: value,
+    }))
+  }
+
+  const handleSearch = () => {
+    console.log('견적생성 실행 버튼', searchForm)
+    setChatParams({
+      ...searchForm,
+      damageCds: [...searchForm.damageCds],
+    })
+    setChatStart(true)
+  }
+
   return (
     <section>
       <TabHeader
@@ -149,7 +186,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
                 <BaseSelect
                   options={brandOptions}
                   value={brandValue}
-                  onChange={setBrandValue}
+                  onChange={handleChangeBrand}
                   placeholder="선택"
                 />
               </BaseFormField>
@@ -216,27 +253,42 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
             <BaseRadio options={damageLevelOptions} value={damageLevel} onChange={setDamageLevel} />
           </BaseSection>
 
-          <BaseButton className="mt-10 w100" onClick={() => console.log('클릭')}>
+          <BaseButton className="mt-10 w100" onClick={handleSearch}>
             견적 산정 실행
           </BaseButton>
         </div>
 
         <div className="estimate-layout__right">
-          <BaseSection title="예상 견적">
-            <p></p>
-          </BaseSection>
+          {!chatStart && (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '100px',
+              }}
+            >
+              차량과 파손 부위 선택 후 실행하세요
+            </div>
+          )}
+          {chatStart && (
+            <div>
+              <BaseSection title="예상 견적">
+                <p></p>
+              </BaseSection>
 
-          <BaseSection className="mt-20" title="세부 산출">
-            <p></p>
-          </BaseSection>
+              <BaseSection className="mt-20" title="세부 산출">
+                <p></p>
+              </BaseSection>
 
-          <BaseSection className="mt-20" title="AI 분석">
-            <p></p>
-          </BaseSection>
+              <BaseSection className="mt-20" title="AI 분석">
+                <BaseChat width="500" start={chatStart} chatData={returnChatData}></BaseChat>
+              </BaseSection>
 
-          <BaseSection className="mt-20" title="견적 산정 완료">
-            <p></p>
-          </BaseSection>
+              <BaseSection className="mt-20" title="견적 산정 완료">
+                <p></p>
+              </BaseSection>
+            </div>
+          )}
         </div>
       </div>
 
