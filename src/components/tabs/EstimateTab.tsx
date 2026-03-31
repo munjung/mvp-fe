@@ -76,8 +76,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   const [yearValue, setYearValue] = useState('')
   const [mileageValue, setMileageValue] = useState('')
   const [popupOpen, setPopupOpen] = useState(false)
-  const [frontChips, setFrontChips] = useState<string[]>([])
-  const [backChips, setBackChips] = useState<string[]>([])
+  const [selectedChips, setSelectedChips] = useState<Record<string, string[]>>({})
   const [files, setFiles] = useState<File[]>([])
 
   const { data: brands } = useBrands()
@@ -92,39 +91,34 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
     }))
   }, [brands?.data])
 
-  const { frontOptions, backOptions } = useMemo(() => {
+  const damageOptions = useMemo<Record<string, SelectOption[]>>(() => {
     const damageList = (damages?.data as DamageItem[] | undefined) ?? []
-
-    const result = {
-      frontOptions: [] as SelectOption[],
-      backOptions: [] as SelectOption[],
-    }
+    const result: Record<string, SelectOption[]> = {}
 
     damageList.forEach((damage) => {
-      const mappedParts: SelectOption[] =
-        damage.part?.map((part) => ({
-          label: part.name,
-          value: String(part.id),
-        })) ?? []
-
-      if (damage.category === '전면부') {
-        result.frontOptions = mappedParts
-      }
-
-      if (damage.category === '후면부') {
-        result.backOptions = mappedParts
-      }
+      result[damage.category] = damage.part?.map((part) => ({
+        label: part.name,
+        value: String(part.id),
+      })) ?? []
     })
 
     return result
   }, [damages?.data])
+
+  const handleChipChange = (category: string, values: string[]) => {
+    setSelectedChips((prev) => ({ ...prev, [category]: values }))
+  }
 
   const handleMileageChange = (e: ChangeEvent<HTMLInputElement>) => {
     setMileageValue(e.target.value)
   }
 
   const selectedCase = selectCaseOptions.find((option) => option.value === selectedValue)
-  const selectedDamageText = [...frontChips, ...backChips].join(', ')
+  const selectedDamageText = Object.entries(selectedChips)
+    .flatMap(([category, values]) =>
+      values.map((v) => damageOptions[category]?.find((o) => o.value === v)?.label ?? v),
+    )
+    .join(', ')
 
   return (
     <section>
@@ -196,19 +190,15 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
             <BaseFormField className="w100">
               <p>{selectedDamageText}</p>
 
-              <BaseMultiSelectChip
-                label="전면부"
-                options={frontOptions}
-                value={frontChips}
-                onChange={setFrontChips}
-              />
-
-              <BaseMultiSelectChip
-                label="후면부"
-                options={backOptions}
-                value={backChips}
-                onChange={setBackChips}
-              />
+              {Object.keys(damageOptions).map((category) => (
+                <BaseMultiSelectChip
+                  key={category}
+                  label={category}
+                  options={damageOptions[category]}
+                  value={selectedChips[category] ?? []}
+                  onChange={(values) => handleChipChange(category, values)}
+                />
+              ))}
             </BaseFormField>
           </BaseSection>
 
