@@ -14,7 +14,7 @@ type ChatBlock = {
 export default function BaseChat({
   width = '300',
   start = false, //  로딩 상태 (true면 "분석 생성 중..." 메시지 노출)
-  chatData = [{ id: 0, html: '' }], //  채팅 데이터 (HTML 문자열 배열)
+  chatData = [], //  채팅 데이터 (HTML 문자열 배열)
 }: BaseChatProps) {
   const [visibleBlocks, setVisibleBlocks] = useState<ChatBlock[]>([])
   const hasStarted = useRef(false)
