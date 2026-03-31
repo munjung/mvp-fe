@@ -1,11 +1,8 @@
+// AI 자동차 손해사정 > 처리 방법 탭
 import type { Card } from '@api/cards'
 import TabHeader from './TabHeader'
 
-import {
-  BaseSection,
-  BaseButton,
-  BaseTextarea
-} from '@components/common'
+import { BaseSection, BaseButton, BaseTextarea } from '@components/common'
 
 interface Props {
   card: Card
@@ -23,7 +20,7 @@ function ProcessTab({ selectedValue, onSelectChange }: Props) {
           { value: 'case1', label: 'Case 1: 교차로 골목길 충돌 - 그랜저 vs BMW 7 시리즈' },
           { value: 'case2', label: 'Case 2: sample case 2' },
           { value: 'case3', label: 'Case 3: sample case 3' },
-          { value: 'case4', label: 'Case 4: sample case 4' }
+          { value: 'case4', label: 'Case 4: sample case 4' },
         ]}
         selectedValue={selectedValue}
         onSelectChange={onSelectChange}
@@ -41,7 +38,6 @@ function ProcessTab({ selectedValue, onSelectChange }: Props) {
       <BaseButton className="mt-10 w100" onClick={() => console.log('클릭')}>
         접수 내용 분석
       </BaseButton>
-
     </section>
   )
 }

@@ -1,3 +1,4 @@
+// AI 자동차 손해사정 > 과실 산정 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
 import TabHeader from './TabHeader'
