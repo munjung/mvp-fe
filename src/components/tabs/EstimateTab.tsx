@@ -2,6 +2,8 @@
 import { useMemo, useState } from 'react'
 import type { ChangeEvent } from 'react'
 import type { Card } from '@api/cards'
+import { executeRules } from '@api/rules'
+import type { RuleResult } from '@api/rules'
 import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
 import TabHeader from './TabHeader'
 
@@ -122,6 +124,25 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
     .join(', ')
 
   // -----------------------
+  //  Rule Engine
+  // -----------------------
+  const [ruleResults, setRuleResults] = useState<RuleResult[]>([])
+  const [ruleLoading, setRuleLoading] = useState(false)
+
+  const handleRuleExecute = async () => {
+    setRuleLoading(true)
+    setRuleResults([])
+    try {
+      const results = await executeRules()
+      setRuleResults(results)
+    } catch (e) {
+      console.error('Rule Engine 호출 실패', e)
+    } finally {
+      setRuleLoading(false)
+    }
+  }
+
+  // -----------------------
   //  AI 분석
   // -----------------------
   type ChatParams = {
@@ -155,6 +176,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
       damageCds: [...searchForm.damageCds],
     })
     setChatStart(true)
+    handleRuleExecute()
   }
 
   return (
@@ -272,6 +294,26 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
               <BaseSection className="mt-20" title="AI 분석">
                 <BaseChat width="500" start={chatStart} chatData={returnChatData}></BaseChat>
+              </BaseSection>
+
+              <BaseSection className="mt-20" title="온톨로지 추론 결과">
+                {ruleLoading && <p style={{ color: '#64748b', fontSize: 13 }}>추론 중...</p>}
+                {!ruleLoading && ruleResults.map((r, i) => {
+                  const mod =
+                    r.severity === 'error' || r.severity === 'critical' ? 'error'
+                    : r.severity === 'warn' || r.severity === 'warning' ? 'warn'
+                    : 'info'
+                  return (
+                    <div key={i} className={`rule-result rule-result--${mod}`}>
+                      <div className="rule-result__badges">
+                        <span className={`rule-result__badge rule-result__badge--${mod}`}>{r.flag}</span>
+                        <span className={`rule-result__badge rule-result__badge--${mod}`}>{r.severity}</span>
+                      </div>
+                      <div className="rule-result__msg">{r.msg}</div>
+                      <div className="rule-result__clause">📌{r.clause}</div>
+                    </div>
+                  )
+                })}
               </BaseSection>
 
               <BaseSection className="mt-20" title="견적 산정 완료">

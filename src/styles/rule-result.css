@@ -1,0 +1,44 @@
+/* =========================
+   온톨로지 추론 결과
+========================= */
+.rule-result {
+  border-left: 3px solid;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+}
+
+.rule-result--error  { border-color: #ef4444; background: #fef2f2; }
+.rule-result--warn   { border-color: #f59e0b; background: #fffbeb; }
+.rule-result--info   { border-color: #6366f1; background: #eef2ff; }
+
+.rule-result__badges {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+  align-items: center;
+}
+
+.rule-result__badge {
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.rule-result__badge--error { color: #ef4444; background: #fee2e2; }
+.rule-result__badge--warn  { color: #d97706; background: #fef3c7; }
+.rule-result__badge--info  { color: #4f46e5; background: #e0e7ff; }
+
+.rule-result__msg {
+  color: #0f172a;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+
+.rule-result__clause {
+  color: #64748b;
+  font-size: 11px;
+}
