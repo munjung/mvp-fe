@@ -67,8 +67,10 @@ export const getCards = async (): Promise<Card[]> => {
   return DUMMY_CARDS
 }
 
-// [GET] UseCase 목록 조회
+// [GET] UseCase 조회
 export const getCaseList = () => apiClient.get('/api/v1/usecase')
+
+export const getCaseDetail = (id: number) => apiClient.get(`/api/v1/usecase/${id}`)
 
 // [GET] /api/v1/cards/:id — 카드 상세 조회
 // export const getCardById = async (id: number): Promise<Card> => {

@@ -9,6 +9,7 @@ import FaultTab from '@components/tabs/FaultTab'
 import { BaseButton, BasePopup, BaseSection } from '@components/common'
 import ProcessTab from '@components/tabs/ProcessTab'
 import { useCases } from '@/hooks/useCards'
+import { getCaseDetail } from '@api/cards'
 import { type BadgeMeta } from '@components/common'
 
 import type { ParamObject } from '@api/analyze'
@@ -75,9 +76,15 @@ function CardDetail() {
     setSelectedCase(value)
   }
 
-  const onLoadCaseDetail = () => {
-    console.log(selectedCase)
+  // [FUNC] UseCase 불러오기 버튼
+  const onLoadCaseDetail = async () => {
+    console.log('불러오기::', selectedCase)
+    const { data } = await getCaseDetail(Number(selectedCase))
+    console.log(data)
+
+    setSelectedValue({ ...selectedValue, ...data.data })
   }
+
   return (
     <div style={{ padding: '2% 8%' }}>
       <header className="page-header" style={{ textAlign: 'left' }}>
@@ -118,7 +125,7 @@ function CardDetail() {
             selectOptions={selectCaseOptions}
             selectedValue={selectedCase}
             onSelectChange={onSelectCaseChange}
-            onLoad={() => onLoadCaseDetail}
+            onLoad={onLoadCaseDetail}
             onReset={() => setSelectedCase}
             onViewSituation={() => setPopupOpen(true)}
           />
