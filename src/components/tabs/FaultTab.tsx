@@ -49,7 +49,7 @@ function FaultTab({ selectedValue, onSelectChange }: Props) {
 
   return (
     <section>
-      <TabHeader
+      {/* <TabHeader
         title="과실 산정"
         tabType="fault"
         selectOptions={[
@@ -63,7 +63,7 @@ function FaultTab({ selectedValue, onSelectChange }: Props) {
         onLoad={() => {}}
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
-      />
+      /> */}
       {/* TODO: 과실 산정 기능 구현 */}
       <div className="estimate-layout mt-20">
         {/* 좌측: 입력 폼 */}

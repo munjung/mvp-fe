@@ -1,16 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getUseCaseList, getBrandList, getDamageList, getChatData } from '@api/estimate'
-
-export const useUseCases = () => {
-  return useQuery({
-    queryKey: ['usecase'],
-    queryFn: async () => {
-      const res = await getUseCaseList()
-      console.log('useCase 목록 조회 :: ', res.data)
-      return res.data
-    },
-  })
-}
+import { getBrandList, getDamageList, getChatData } from '@api/estimate'
 
 export const useBrands = () => {
   return useQuery({

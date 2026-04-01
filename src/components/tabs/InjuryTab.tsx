@@ -13,7 +13,7 @@ interface Props {
 function InjuryTab({ selectedValue, onSelectChange }: Props) {
   return (
     <section>
-      <TabHeader
+      {/* <TabHeader
         title="대인피해"
         tabType="injury"
         selectOptions={[
@@ -27,7 +27,7 @@ function InjuryTab({ selectedValue, onSelectChange }: Props) {
         onLoad={() => {}}
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
-      />
+      /> */}
       {/* TODO: 대인피해 기능 구현 */}
       <div className="estimate-layout mt-20">
         <div className="estimate-layout__left">

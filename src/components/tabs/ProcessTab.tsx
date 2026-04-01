@@ -27,7 +27,7 @@ function ProcessTab({ selectedValue, onSelectChange }: Props) {
 
   return (
     <section>
-      <TabHeader
+      {/* <TabHeader
         title="처리 방법"
         tabType="process"
         selectOptions={[
@@ -41,7 +41,7 @@ function ProcessTab({ selectedValue, onSelectChange }: Props) {
         onLoad={() => {}}
         onReset={() => onSelectChange('')}
         onViewSituation={() => {}}
-      />
+      /> */}
       {/* TODO: 처리방법 기능 구현 */}
 
       <BaseButton>사고건 불러오기</BaseButton>

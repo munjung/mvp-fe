@@ -5,7 +5,7 @@ import type { Card } from '@api/cards'
 import { executeRules } from '@api/rules'
 import type { RuleResult } from '@api/rules'
 import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
-import TabHeader from './TabHeader'
+// import TabHeader from './TabHeader'
 
 import {
   BaseButton,
@@ -99,10 +99,11 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
     const result: Record<string, SelectOption[]> = {}
 
     damageList.forEach((damage) => {
-      result[damage.category] = damage.part?.map((part) => ({
-        label: part.name,
-        value: String(part.id),
-      })) ?? []
+      result[damage.category] =
+        damage.part?.map((part) => ({
+          label: part.name,
+          value: String(part.id),
+        })) ?? []
     })
 
     return result
@@ -110,6 +111,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
   const handleChipChange = (category: string, values: string[]) => {
     setSelectedChips((prev) => ({ ...prev, [category]: values }))
+    onSelectChange('')
   }
 
   const handleMileageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -181,7 +183,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
   return (
     <section>
-      <TabHeader
+      {/* <TabHeader
         title="견적 산정"
         tabType="estimate"
         selectOptions={selectCaseOptions}
@@ -190,7 +192,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         onLoad={() => {}}
         onReset={() => onSelectChange('')}
         onViewSituation={() => setPopupOpen(true)}
-      />
+      /> */}
 
       <div className="estimate-layout mt-20">
         <div className="estimate-layout__left">
@@ -298,22 +300,29 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
               <BaseSection className="mt-20" title="온톨로지 추론 결과">
                 {ruleLoading && <p style={{ color: '#64748b', fontSize: 13 }}>추론 중...</p>}
-                {!ruleLoading && ruleResults.map((r, i) => {
-                  const mod =
-                    r.severity === 'error' || r.severity === 'critical' ? 'error'
-                    : r.severity === 'warn' || r.severity === 'warning' ? 'warn'
-                    : 'info'
-                  return (
-                    <div key={i} className={`rule-result rule-result--${mod}`}>
-                      <div className="rule-result__badges">
-                        <span className={`rule-result__badge rule-result__badge--${mod}`}>{r.flag}</span>
-                        <span className={`rule-result__badge rule-result__badge--${mod}`}>{r.severity}</span>
+                {!ruleLoading &&
+                  ruleResults.map((r, i) => {
+                    const mod =
+                      r.severity === 'error' || r.severity === 'critical'
+                        ? 'error'
+                        : r.severity === 'warn' || r.severity === 'warning'
+                          ? 'warn'
+                          : 'info'
+                    return (
+                      <div key={i} className={`rule-result rule-result--${mod}`}>
+                        <div className="rule-result__badges">
+                          <span className={`rule-result__badge rule-result__badge--${mod}`}>
+                            {r.flag}
+                          </span>
+                          <span className={`rule-result__badge rule-result__badge--${mod}`}>
+                            {r.severity}
+                          </span>
+                        </div>
+                        <div className="rule-result__msg">{r.msg}</div>
+                        <div className="rule-result__clause">📌{r.clause}</div>
                       </div>
-                      <div className="rule-result__msg">{r.msg}</div>
-                      <div className="rule-result__clause">📌{r.clause}</div>
-                    </div>
-                  )
-                })}
+                    )
+                  })}
               </BaseSection>
 
               <BaseSection className="mt-20" title="견적 산정 완료">
