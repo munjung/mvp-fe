@@ -1,4 +1,4 @@
-import axios from 'axios'
+import apiClient from './client'
 
 export type RuleResult = {
   flag: string
@@ -37,6 +37,6 @@ export const RULE_CTX = {
 }
 
 export const executeRules = async (): Promise<RuleResult[]> => {
-  const res = await axios.post('http://localhost:8080/api/v1/rules/execute', RULE_CTX)
+  const res = await apiClient.post('/api/v1/rules/execute', RULE_CTX)
   return res.data?.data?.results ?? []
 }
