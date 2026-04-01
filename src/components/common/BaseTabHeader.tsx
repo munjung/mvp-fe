@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import BaseSelect from './BaseSelect'
 
 export interface BadgeMeta {
@@ -38,14 +38,14 @@ export default function BaseTabHeader({
 }: Props) {
   const [loaded, setLoaded] = useState(false)
 
-  useEffect(() => {
-    setLoaded(false)
-  }, [selectedValue])
+  // useEffect(() => {
+  //   setLoaded(false)
+  // }, [selectedValue])
 
   const hasValue = selectedValue !== ''
 
-  const placeholder = selectOptions.find(o => o.value === '')?.label ?? '선택'
-  const filteredOptions = selectOptions.filter(o => o.value !== '')
+  const placeholder = selectOptions.find((o) => o.value === '')?.label ?? '선택'
+  const filteredOptions = selectOptions.filter((o) => o.value !== '')
 
   function handleLoad() {
     setLoaded(true)
@@ -57,6 +57,11 @@ export default function BaseTabHeader({
     onReset?.()
   }
 
+  const onSelectValueChange = (value: string) => {
+    setLoaded(false)
+    if (onSelectChange) onSelectChange(value)
+  }
+
   return (
     <div className="tab-header">
       <span className="tab-header__title">• {title} |</span>
@@ -65,7 +70,7 @@ export default function BaseTabHeader({
         <BaseSelect
           options={filteredOptions}
           value={selectedValue}
-          onChange={val => onSelectChange?.(val)}
+          onChange={(v) => onSelectValueChange(v)}
           placeholder={placeholder}
         />
       )}
@@ -92,13 +97,21 @@ export default function BaseTabHeader({
       )}
 
       <div className="tab-header__badges">
-        {badges.map(badge => {
+        {badges.map((badge) => {
           const active = badge.key === activeKey
           return (
             <span
               key={badge.key}
               className={`tab-badge${active ? ' tab-badge--active' : ''}`}
-              style={active ? { color: badge.color, background: badge.bg, border: `1px solid ${badge.color}40` } : undefined}
+              style={
+                active
+                  ? {
+                      color: badge.color,
+                      background: badge.bg,
+                      border: `1px solid ${badge.color}40`,
+                    }
+                  : undefined
+              }
             >
               {badge.label}
             </span>

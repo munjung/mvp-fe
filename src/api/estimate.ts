@@ -1,6 +1,6 @@
 import apiClient from './client'
 
-export const getUseCaseList = () => apiClient.get('/api/v1/usecase')
+// ─── 타입 ────────────────────────────────────────────────────────────────────
 
 export const getBrandList = () => apiClient.get('/api/v1/brand')
 
@@ -32,7 +32,12 @@ const CHAT_DATA: ChatBlock[] = [
   },
 ]
 
-export const getChatData = async (params: { brandCd: string; damageCds: string[] }) => {
+export interface ChatParams {
+  brandCd: string
+  damageCds: string[]
+}
+
+export const getChatData = async (params: ChatParams) => {
   console.log('getChats params :: ', params)
   return CHAT_DATA
 }
