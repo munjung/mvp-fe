@@ -20,12 +20,10 @@ export default function BaseSelect({
   placeholder = '선택',
   className = '',
 }: BaseSelectProps) {
-  const selectedOption = options.find((option) => option.value === value)
-
   return (
     <Select.Root value={value} onValueChange={onChange}>
       <Select.Trigger className={`base-select-trigger ${className}`.trim()}>
-        <Select.Value placeholder={placeholder}>{selectedOption?.label}</Select.Value>
+        <Select.Value placeholder={placeholder} />
         <Select.Icon>▼</Select.Icon>
       </Select.Trigger>
 
