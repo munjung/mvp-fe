@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getBrandList, getDamageList, getChatData } from '@api/estimate'
+import { getBrandList, getDamageList, getChatData, type ChatParams } from '@api/estimate'
 
 export const useBrands = () => {
   return useQuery({
@@ -21,11 +21,6 @@ export const useDamages = () => {
       return res.data
     },
   })
-}
-
-type ChatParams = {
-  brandCd: string
-  damageCds: string[]
 }
 
 export const useChats = (params: ChatParams | null, enabled: boolean) => {

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useCards } from '@hooks/useCards'
 import TabMenu from '@components/TabMenu'
@@ -10,6 +10,8 @@ import { BaseButton, BasePopup, BaseSection } from '@components/common'
 import ProcessTab from '@components/tabs/ProcessTab'
 import { useCases } from '@/hooks/useCards'
 import { type BadgeMeta } from '@components/common'
+
+import type { ParamObject } from '@api/analyze'
 
 const BADGES: BadgeMeta[] = [
   { key: 'estimate', label: '견적 산정', color: '#2563eb', bg: 'rgba(37,99,235,0.1)' },
@@ -35,7 +37,17 @@ function CardDetail() {
   const navigate = useNavigate()
   const { data: cards, isLoading, isError } = useCards()
   const [activeTab, setActiveTab] = useState(0)
-  const [selectedValue, setSelectedValue] = useState('')
+  const [selectedValue, setSelectedValue] = useState<ParamObject>({
+    id: '',
+    name: '',
+    obj1: '',
+    brandCd: '',
+    damageCds: [''],
+  })
+
+  useEffect(() => {
+    console.log(selectedValue)
+  }, [selectedValue])
 
   const [selectedCase, setSelectedCase] = useState<string>('')
 
