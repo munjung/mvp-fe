@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useCards } from '@hooks/useCards'
 import TabMenu from '@components/TabMenu'
 import TabHeader from '@components/tabs/TabHeader'
 import EstimateTab from '@components/tabs/EstimateTab'
@@ -8,10 +7,10 @@ import InjuryTab from '@components/tabs/InjuryTab'
 import FaultTab from '@components/tabs/FaultTab'
 import { BaseButton, BasePopup, BaseSection } from '@components/common'
 import ProcessTab from '@components/tabs/ProcessTab'
-import { useCases } from '@/hooks/useCards'
-import { type BadgeMeta } from '@components/common'
+import { useCards, useCases, useCaseDetail } from '@/hooks/useCards'
+import { type BadgeMeta } from '@/types/common'
 
-import type { ParamObject } from '@api/analyze'
+import type { ParamObject } from '@/types/tab'
 
 const BADGES: BadgeMeta[] = [
   { key: 'estimate', label: '견적 산정', color: '#2563eb', bg: 'rgba(37,99,235,0.1)' },
@@ -40,7 +39,7 @@ function CardDetail() {
   }, [selectedValue])
 
   const [selectedCase, setSelectedCase] = useState<string>('')
-
+  const [caseDetailId, setCaseDetailId] = useState<number | undefined>(undefined)
   const [popupOpen, setPopupOpen] = useState(false)
 
   const card = useMemo(() => {
@@ -50,6 +49,7 @@ function CardDetail() {
   const TabData = BADGES[activeTab] ?? BADGES[0]
 
   const { selectCaseOptions = [] } = useCases()
+  const { data: caseDetail } = useCaseDetail(caseDetailId)
 
   // [FUNC] UseCase 변경
   const onSelectCaseChange = useCallback((value: string) => {
@@ -57,9 +57,8 @@ function CardDetail() {
     setSelectedCase(value)
   }, [])
 
-  // [FUNC] UseCase 불러오기 버튼
   const onLoadCaseDetail = useCallback(() => {
-    console.log(selectedCase)
+    setCaseDetailId(Number(selectedCase))
   }, [selectedCase])
 
   const closePopup = () => setPopupOpen(false)
@@ -100,7 +99,10 @@ function CardDetail() {
           onReset={() => setSelectedCase('')}
           onViewSituation={() => setPopupOpen(true)}
         />
-        <TabContent card={card} selectedValue={selectedValue} onSelectChange={setSelectedValue} />
+        <TabContent 
+        card={card} selectedValue={selectedValue} 
+        onSelectChange={setSelectedValue} 
+        caseDetail={caseDetail}/>
       </main>
 
       <BasePopup

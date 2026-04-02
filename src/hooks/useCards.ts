@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getCards, getCaseList } from '@api/cards'
+import { getCards, getCaseList, getCaseDetail } from '@api/cards'
 import type { SelectOption } from '@/types/common'
 
 export const useCards = () => {
@@ -24,8 +24,13 @@ export const useCases = () => {
     ...query,
     selectCaseOptions,
   }
-  // return useQuery({
-  //   queryKey: ['usecase'],
-  //   queryFn: getCaseList,
-  // })
+}
+
+
+export const useCaseDetail = (id? : number) => {
+  return useQuery({
+    queryKey: ['caseDetail', id],
+    queryFn: () => getCaseDetail(id as number),
+    enabled: !!id
+  })
 }

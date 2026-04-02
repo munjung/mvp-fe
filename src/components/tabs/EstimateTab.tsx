@@ -1,9 +1,10 @@
 // AI 자동차 손해사정 > 견적 산정 탭
 import { useEffect, useMemo, useState } from 'react'
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@api/analyze'
+import type { ParamObject } from '@/types/tab'
 import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
+import type { UseCaseDetail } from '@/types/case'
 
 import {
   BaseButton,
@@ -22,6 +23,7 @@ interface Props {
   card: Card
   selectedValue: ParamObject
   onSelectChange: (value: ParamObject) => void
+  caseDetail?: UseCaseDetail
 }
 
 type RadioOption = {
@@ -52,7 +54,14 @@ const damageLevelOptions: RadioOption[] = [
   { label: '전손 추정', value: 'd' },
 ]
 
-function EstimateTab({ selectedValue, onSelectChange }: Props) {
+function EstimateTab({ selectedValue, onSelectChange, caseDetail }: Props) {
+  useEffect(() => {
+     if (!caseDetail) return
+
+     console.log(caseDetail)
+
+  }, [caseDetail])
+
   // useState 공통 상태 선언
   const [form, setForm] = useState<FormState>({
     vehicleType: '', //  차량정보

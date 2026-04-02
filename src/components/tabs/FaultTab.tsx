@@ -1,7 +1,7 @@
 // AI 자동차 손해사정 > 과실 산정 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@api/analyze'
+import type { ParamObject } from '@/types/tab'
 
 import {
   BaseButton,

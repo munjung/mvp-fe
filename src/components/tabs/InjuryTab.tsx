@@ -1,6 +1,6 @@
 // AI 자동차 손해사정 > 대인 피해 탭
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@api/analyze'
+import type { ParamObject } from '@/types/tab'
 
 import { BaseSection, BaseTextarea, BaseButton } from '@components/common'
 
