@@ -9,7 +9,7 @@ import FaultTab from '@components/tabs/FaultTab'
 import { BaseButton, BasePopup, BaseSection } from '@components/common'
 import ProcessTab from '@components/tabs/ProcessTab'
 import { useCases } from '@/hooks/useCards'
-import { type BadgeMeta } from '@components/common'
+import { type BadgeMeta } from '@/types/common'
 
 import type { ParamObject } from '@api/analyze'
 
