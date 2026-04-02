@@ -1,5 +1,5 @@
 import apiClient from './client'
-import type { UseCase } from '@/types/case'
+import type { UseCase, UseCaseDetail } from '@/types/case'
 
 // const BASE = '/api/v1/cards'  // 백엔드 연결 시 주석 해제
 
@@ -67,5 +67,12 @@ export const getCards = async (): Promise<Card[]> => {
 export const getCaseList = async (): Promise<UseCase[]> => {
   const res = await apiClient.get('/api/v1/usecase')
   console.log('useCase 목록 조회 :: ', res.data)
+  return res.data
+}
+
+// [GET] UseCase 상세 조회
+export const getCaseDetail = async (id: number | string): Promise<UseCaseDetail[]> => {
+  const res = await apiClient.get(`/api/v1/usecase/${id}`)
+  console.log('useCase 상세 조회 :: ', res.data)
   return res.data
 }

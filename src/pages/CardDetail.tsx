@@ -70,10 +70,10 @@ function CardDetail() {
   // [FUNC] UseCase 불러오기 버튼
   const onLoadCaseDetail = async () => {
     console.log('불러오기::', selectedCase)
-    const { data } = await getCaseDetail(Number(selectedCase))
+    const data = await getCaseDetail(Number(selectedCase))
     console.log(data)
 
-    setSelectedValue({ ...selectedValue, ...data.data })
+    setSelectedValue({ ...selectedValue, ...data })
   }
 
   return (
