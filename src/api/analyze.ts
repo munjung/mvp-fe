@@ -6,6 +6,11 @@ export interface ParamObject {
   obj1: string
   brandCd: string
   damageCds: string[]
-  ownVehicle?: []
-  otherVehicle?: []
+  ownVehicle?: Vehicle[]
+  otherVehicle?: Vehicle[]
+}
+
+export interface Vehicle {
+  brand: { id: number; name: string }
+  damageDegree: string
 }
