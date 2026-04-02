@@ -1,7 +1,7 @@
 // AI 자동차 손해사정 > 처리 방법 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@api/analyze'
+import type { ParamObject } from '@/types/tab'
 
 import { BaseSection, BaseButton, BaseTextarea, BaseRadio } from '@components/common'
 

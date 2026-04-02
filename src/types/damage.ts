@@ -8,3 +8,8 @@ export interface DamageCategory {
     category: string 
     part?: Part[]
 }
+
+export interface DamageParts {
+    category: string
+    name: string
+}

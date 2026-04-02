@@ -1,8 +1,6 @@
 import apiClient from './client'
 import type { UseCase, UseCaseDetail } from '@/types/case'
 
-// const BASE = '/api/v1/cards'  // 백엔드 연결 시 주석 해제
-
 // ─── 타입 ────────────────────────────────────────────────────────────────────
 
 export interface Card {
@@ -54,12 +52,8 @@ const DUMMY_CARDS: Card[] = [
   },
 ]
 
-// ─── API 함수 ─────────────────────────────────────────────────────────────────
-
-// [GET] /api/v1/cards — 카드 목록 조회
+// [GET] /api/v1/cards — 카드 목록 조회 ()
 export const getCards = async (): Promise<Card[]> => {
-  // const { data } = await client.get<Card[]>(BASE)
-  // return data
   return DUMMY_CARDS
 }
 
@@ -71,8 +65,7 @@ export const getCaseList = async (): Promise<UseCase[]> => {
 }
 
 // [GET] UseCase 상세 조회
-export const getCaseDetail = async (id: number | string): Promise<UseCaseDetail[]> => {
+export const getCaseDetail = async (id: number | string): Promise<UseCaseDetail> => {
   const res = await apiClient.get(`/api/v1/usecase/${id}`)
-  console.log('useCase 상세 조회 :: ', res.data)
   return res.data
 }
