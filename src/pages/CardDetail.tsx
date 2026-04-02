@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useCards } from '@hooks/useCards'
 import TabMenu from '@components/TabMenu'
@@ -12,7 +12,6 @@ import { useCases } from '@/hooks/useCards'
 import { type BadgeMeta } from '@components/common'
 
 import type { ParamObject } from '@api/analyze'
-import type { SelectOption } from '@/types/common'
 
 const BADGES: BadgeMeta[] = [
   { key: 'estimate', label: '견적 산정', color: '#2563eb', bg: 'rgba(37,99,235,0.1)' },
@@ -44,80 +43,65 @@ function CardDetail() {
 
   const [popupOpen, setPopupOpen] = useState(false)
 
-  const card = cards?.find((c) => c.id === Number(id))
-  const TabContent = TAB_COMPONENTS[activeTab]
-  const TabData = BADGES[activeTab]
+  const card = useMemo(() => {
+    return cards?.find((c) => c.id === Number(id))
+  }, [cards, id])
+  const TabContent = TAB_COMPONENTS[activeTab] ?? EstimateTab
+  const TabData = BADGES[activeTab] ?? BADGES[0]
 
-  const { data: cases } = useCases()
-
-  // [FUNC] UseCase 목록 -> Select Option 변경
-  const selectCaseOptions = useMemo<SelectOption[]>(() => {
-    const caseList = cases ?? []
-
-    return caseList.map((c) => ({
-      label: c.name,
-      value: String(c.id),
-    }))
-  }, [cases])
+  const { selectCaseOptions = [] } = useCases()
 
   // [FUNC] UseCase 변경
-  const onSelectCaseChange = (value: string) => {
+  const onSelectCaseChange = useCallback((value: string) => {
     console.log(value)
     setSelectedCase(value)
-  }
+  }, [])
 
-  const onLoadCaseDetail = () => {
+  const onLoadCaseDetail = useCallback(() => {
     console.log(selectedCase)
-  }
+  }, [selectedCase])
+
+  const closePopup = () => setPopupOpen(false)
+
+  if (isLoading) return <p className="status-msg">불러오는 중...</p>
+  if (isError) return <p className="status-msg error">데이터를 불러오지 못했습니다.</p>
+  if (!card) return <p className="status-msg">카드를 찾을 수 없습니다.</p>
   return (
     <div style={{ padding: '2% 8%' }}>
       <header className="page-header" style={{ textAlign: 'left' }}>
         <BaseButton style={{ marginBottom: 24 }} onClick={() => navigate(-1)}>
           ← 목록으로
         </BaseButton>
-        {card && (
-          <>
-            <div className="card-tags">
-              {card.tags.map((tag) => (
-                <span key={tag} className="card-tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <h1
-              style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-h)', margin: '12px 0 0' }}
-            >
-              {card.title}
-            </h1>
-            <p style={{ color: 'var(--text)', lineHeight: 1.7, marginTop: 15 }}>
-              {card.description}
-            </p>
-          </>
-        )}
+
+        <div className="card-tags">
+          {card.tags.map((tag) => (
+            <span key={tag} className="card-tag">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-h)', margin: '12px 0 0' }}>
+          {card.title}
+        </h1>
+        <p style={{ color: 'var(--text)', lineHeight: 1.7, marginTop: 15 }}>{card.description}</p>
       </header>
 
-      {isLoading && <p className="status-msg">불러오는 중...</p>}
-      {isError && <p className="status-msg error">데이터를 불러오지 못했습니다.</p>}
+      <main>
+        <TabMenu active={activeTab} onChange={setActiveTab} />
+        <TabHeader
+          title={TabData.label}
+          tabType={TabData.key}
+          badgeList={BADGES}
+          selectOptions={selectCaseOptions}
+          selectedValue={selectedCase}
+          onSelectChange={onSelectCaseChange}
+          onLoad={onLoadCaseDetail}
+          onReset={() => setSelectedCase('')}
+          onViewSituation={() => setPopupOpen(true)}
+        />
+        <TabContent card={card} selectedValue={selectedValue} onSelectChange={setSelectedValue} />
+      </main>
 
-      {card && (
-        <main>
-          <TabMenu active={activeTab} onChange={setActiveTab} />
-          <TabHeader
-            title={TabData.label}
-            tabType={TabData.key}
-            badgeList={BADGES}
-            selectOptions={selectCaseOptions}
-            selectedValue={selectedCase}
-            onSelectChange={onSelectCaseChange}
-            onLoad={() => onLoadCaseDetail}
-            onReset={() => setSelectedCase}
-            onViewSituation={() => setPopupOpen(true)}
-          />
-          <TabContent card={card} selectedValue={selectedValue} onSelectChange={setSelectedValue} />
-        </main>
-      )}
-
-      {!isLoading && !isError && !card && <p className="status-msg">카드를 찾을 수 없습니다.</p>}
       <BasePopup
         show={popupOpen}
         title={'사고 상황'}
@@ -126,9 +110,9 @@ function CardDetail() {
         showCloseButton={true}
         showConfirm={false}
         showCancel={false}
-        onCancel={() => setPopupOpen(false)}
-        onConfirm={() => setPopupOpen(false)}
-        onClose={() => setPopupOpen(false)}
+        onCancel={closePopup}
+        onConfirm={closePopup}
+        onClose={closePopup}
       >
         <BaseSection className="mt-10">
           <p>🚗 사고 상황</p>
