@@ -1,11 +1,6 @@
 import apiClient from './client'
+import type { RuleResult } from '@/types/rule'
 
-export type RuleResult = {
-  flag: string
-  msg: string
-  severity: string
-  clause: string
-}
 
 export const RULE_CTX = {
   // R04 - 과실비율 (교차로) → info
@@ -38,5 +33,5 @@ export const RULE_CTX = {
 
 export const executeRules = async (): Promise<RuleResult[]> => {
   const res = await apiClient.post('/api/v1/rules/execute', RULE_CTX)
-  return res.data?.data?.results ?? []
+  return res.data?.results ?? []
 }

@@ -1,10 +1,21 @@
 import apiClient from './client'
+import type { Brand } from '@/types/brand'
+import type { DamageCategory } from '@/types/damage'
 
-// ─── 타입 ────────────────────────────────────────────────────────────────────
 
-export const getBrandList = () => apiClient.get('/api/v1/brand')
+// [GET] 제조사 목록 조회
+export const getBrandList = async ():Promise<Brand[]> => {
+  const res = await apiClient.get('/api/v1/brand')
+  console.log('제조사 목록 조회 :: ', res.data)
+  return res.data
+}
 
-export const getDamageList = () => apiClient.get('/api/v1/damage')
+// [GET] 파손부위 목록 조회
+export const getDamageList = async ():Promise<DamageCategory[]> => {
+  const res = await apiClient.get('/api/v1/damage')
+  console.log('파손부위 목록 조회 :: ', res.data)
+  return res.data
+}
 
 type ChatBlock = {
   id: number

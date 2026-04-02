@@ -13,6 +13,7 @@ import { getCaseDetail } from '@api/cards'
 import { type BadgeMeta } from '@components/common'
 
 import type { ParamObject } from '@api/analyze'
+import type { SelectOption } from '@/types/common'
 
 const BADGES: BadgeMeta[] = [
   { key: 'estimate', label: '견적 산정', color: '#2563eb', bg: 'rgba(37,99,235,0.1)' },
@@ -22,16 +23,6 @@ const BADGES: BadgeMeta[] = [
 ]
 
 const TAB_COMPONENTS = [EstimateTab, InjuryTab, FaultTab, ProcessTab]
-
-type SelectOption = {
-  label: string
-  value: string
-}
-
-type CaseItem = {
-  id: string
-  name: string
-}
 
 function CardDetail() {
   const { id } = useParams<{ id: string }>()
@@ -62,13 +53,13 @@ function CardDetail() {
 
   // [FUNC] UseCase 목록 -> Select Option 변경
   const selectCaseOptions = useMemo<SelectOption[]>(() => {
-    const caseList = (cases?.data as CaseItem[] | undefined) ?? []
+    const caseList = cases ?? []
 
     return caseList.map((c) => ({
       label: c.name,
       value: String(c.id),
     }))
-  }, [cases?.data])
+  }, [cases])
 
   // [FUNC] UseCase 변경
   const onSelectCaseChange = (value: string) => {
