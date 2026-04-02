@@ -1,9 +1,5 @@
 import * as Select from '@radix-ui/react-select'
-
-interface SelectOption {
-  label: string
-  value: string
-}
+import type { SelectOption } from '@/types/common'
 
 interface BaseSelectProps {
   options: SelectOption[]

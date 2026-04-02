@@ -1,17 +1,7 @@
 import { useState } from 'react'
 import BaseSelect from './BaseSelect'
+import type { SelectOption, BadgeMeta } from '@/types/common'
 
-export interface BadgeMeta {
-  key: string
-  label: string
-  color: string
-  bg: string
-}
-
-interface SelectOption {
-  value: string
-  label: string
-}
 
 interface Props {
   title: string

@@ -1,9 +1,5 @@
 import { BaseTabHeader, type BadgeMeta } from '@components/common'
-
-interface SelectOption {
-  value: string
-  label: string
-}
+import type { SelectOption } from '@/types/common'
 
 interface Props {
   title: string

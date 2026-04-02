@@ -1,10 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getBrandList, getDamageList, getChatData, type ChatParams } from '@api/estimate'
-
-type SelectOption = {
-  label: string
-  value: string
-}
+import type { SelectOption } from '@/types/common'
 
 // hook에서 데이터를 완성된 형태로 내려줌
 export const useBrands = () => {
