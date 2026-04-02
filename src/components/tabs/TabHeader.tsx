@@ -1,5 +1,5 @@
-import { BaseTabHeader, type BadgeMeta } from '@components/common'
-import type { SelectOption } from '@/types/common'
+import { BaseTabHeader } from '@components/common'
+import type { SelectOption, BadgeMeta } from '@/types/common'
 
 interface Props {
   title: string
