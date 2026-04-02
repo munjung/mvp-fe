@@ -10,6 +10,7 @@ import { BaseButton, BasePopup, BaseSection } from '@components/common'
 import ProcessTab from '@components/tabs/ProcessTab'
 import { useCases } from '@/hooks/useCards'
 import { type BadgeMeta } from '@/types/common'
+import { getCaseDetail } from '@api/cards'
 
 import type { ParamObject } from '@api/analyze'
 
@@ -58,9 +59,11 @@ function CardDetail() {
   }, [])
 
   // [FUNC] UseCase 불러오기 버튼
-  const onLoadCaseDetail = useCallback(() => {
-    console.log(selectedCase)
-  }, [selectedCase])
+  const onLoadCaseDetail = async () => {
+    const data = await getCaseDetail(Number(selectedCase))
+
+    setSelectedValue({ ...selectedValue, ...data })
+  }
 
   const closePopup = () => setPopupOpen(false)
 
