@@ -13,7 +13,7 @@ interface BaseChatProps {
 
 export default function BaseChat({
   width = 300,
-  loading = false,
+  // loading = false,
   chatData = [],
 }: BaseChatProps) {
   const [visibleBlocks, setVisibleBlocks] = useState<ChatBlock[]>([])
