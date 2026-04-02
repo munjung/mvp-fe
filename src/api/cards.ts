@@ -1,9 +1,5 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// Cards API
-// 백엔드 연결 시 더미 데이터 제거 후 주석 해제
-// ─────────────────────────────────────────────────────────────────────────────
-
 import apiClient from './client'
+import type { UseCase } from '@/types/case'
 
 // const BASE = '/api/v1/cards'  // 백엔드 연결 시 주석 해제
 
@@ -68,27 +64,8 @@ export const getCards = async (): Promise<Card[]> => {
 }
 
 // [GET] UseCase 목록 조회
-export const getCaseList = () => apiClient.get('/api/v1/usecase')
-
-// [GET] /api/v1/cards/:id — 카드 상세 조회
-// export const getCardById = async (id: number): Promise<Card> => {
-//   const { data } = await client.get<Card>(`${BASE}/${id}`)
-//   return data
-// }
-
-// [POST] /api/v1/cards — 카드 등록
-// export const createCard = async (payload: Omit<Card, 'id'>): Promise<Card> => {
-//   const { data } = await client.post<Card>(BASE, payload)
-//   return data
-// }
-
-// [PUT] /api/v1/cards/:id — 카드 수정
-// export const updateCard = async (id: number, payload: Partial<Omit<Card, 'id'>>): Promise<Card> => {
-//   const { data } = await client.put<Card>(`${BASE}/${id}`, payload)
-//   return data
-// }
-
-// [DELETE] /api/v1/cards/:id — 카드 삭제
-// export const deleteCard = async (id: number): Promise<void> => {
-//   await client.delete(`${BASE}/${id}`)
-// }
+export const getCaseList = async ():Promise<UseCase[]> => {
+  const res = await apiClient.get('/api/v1/usecase')
+  console.log('useCase 목록 조회 :: ', res.data)
+  return res.data
+}

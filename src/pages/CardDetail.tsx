@@ -27,11 +27,6 @@ type SelectOption = {
   value: string
 }
 
-type CaseItem = {
-  id: string
-  name: string
-}
-
 function CardDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -61,13 +56,13 @@ function CardDetail() {
 
   // [FUNC] UseCase 목록 -> Select Option 변경
   const selectCaseOptions = useMemo<SelectOption[]>(() => {
-    const caseList = (cases?.data as CaseItem[] | undefined) ?? []
+    const caseList = cases ?? []
 
     return caseList.map((c) => ({
       label: c.name,
       value: String(c.id),
     }))
-  }, [cases?.data])
+  }, [cases])
 
   // [FUNC] UseCase 변경
   const onSelectCaseChange = (value: string) => {

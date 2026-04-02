@@ -1,32 +1,60 @@
 import { useQuery } from '@tanstack/react-query'
 import { getBrandList, getDamageList, getChatData, type ChatParams } from '@api/estimate'
 
-export const useBrands = () => {
-  return useQuery({
-    queryKey: ['brands'],
-    queryFn: async () => {
-      const res = await getBrandList()
-      console.log('제조사 목록 조회 :: ', res.data)
-      return res.data
-    },
-  })
+type SelectOption = {
+  label: string
+  value: string
 }
+
+// hook에서 데이터를 완성된 형태로 내려줌
+export const useBrands = () => {
+  const query = useQuery({
+    queryKey: ['brands'],
+    queryFn: getBrandList,
+  })
+
+  const brandOptions: SelectOption[] = (query.data ?? []).map((brand) => ({
+    label: brand.name,
+    value: String(brand.id)
+  }))
+
+  return {
+    ...query,
+    brandOptions,
+  }
+}
+
+
+
 
 export const useDamages = () => {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['damages'],
-    queryFn: async () => {
-      const res = await getDamageList()
-      console.log('파손부위 목록 조회 :: ', res.data)
-      return res.data
-    },
+    queryFn: getDamageList,
   })
+
+  const damageOptions: Record<string, SelectOption[]> = (query.data ?? []).reduce(
+    (acc, damage) => {
+      acc[damage.category] =
+        damage.part?.map((part) => ({
+          label: part.name,
+          value: String(part.id),
+        })) ?? []
+      return acc
+    },
+    {} as Record<string, SelectOption[]>,
+  )
+
+  return {
+    ...query,
+    damageOptions,
+  }
 }
 
-export const useChats = (params: ChatParams | null, enabled: boolean) => {
+export const useChats = (params: ChatParams | null) => {
   return useQuery({
     queryKey: ['chats', params],
     queryFn: () => getChatData(params as ChatParams),
-    enabled,
+    enabled: !!params,
   })
 }
