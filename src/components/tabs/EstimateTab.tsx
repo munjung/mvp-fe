@@ -1,10 +1,9 @@
 // AI 자동차 손해사정 > 견적 산정 탭
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { Card } from '@api/cards'
 import type { ParamObject } from '@api/analyze'
 import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
-// import TabHeader from './TabHeader'
 
 import {
   BaseButton,
@@ -56,12 +55,12 @@ const damageLevelOptions: RadioOption[] = [
 function EstimateTab({ selectedValue, onSelectChange }: Props) {
   // useState 공통 상태 선언
   const [form, setForm] = useState<FormState>({
-    vehicleType: '',
-    damageLevel: '',
-    brandValue: '',
-    modelValue: '',
-    yearValue: '',
-    mileageValue: '',
+    vehicleType: '', //  차량정보
+    brandValue: '', //   제조사
+    modelValue: '', //   모델
+    yearValue: '', //    연식
+    mileageValue: '', // 주행거리
+    damageLevel: '', //  파손정도
   })
 
   // useState 공통 변경 함수
@@ -75,6 +74,14 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
   const { brandOptions } = useBrands()
   const { damageOptions } = useDamages()
+
+  useEffect(() => {
+    const ownVehicle = selectedValue?.ownVehicle?.[0]
+
+    if (!ownVehicle) return
+
+    // handleChange('brandValue', String(ownVehicle.brand?.id ?? ''))
+  }, [selectedValue.ownVehicle])
 
   const handleChipChange = (category: string) => (values: string[]) => {
     setSelectedChips((prev) => ({ ...prev, [category]: values }))
@@ -251,7 +258,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
               </BaseSection>
 
               <BaseSection className="mt-20" title="AI 분석">
-                <BaseChat width="500" loading={chatLoading} chatData={returnChatData} ></BaseChat>
+                <BaseChat width="500" loading={chatLoading} chatData={returnChatData}></BaseChat>
               </BaseSection>
 
               <BaseSection className="mt-20" title="온톨로지 추론 결과">
