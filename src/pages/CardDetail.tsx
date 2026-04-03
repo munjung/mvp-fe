@@ -8,12 +8,11 @@ import FaultTab from '@components/tabs/FaultTab'
 import { BaseButton, BasePopup, BaseSection } from '@components/common'
 import ProcessTab from '@components/tabs/ProcessTab'
 import { useCards, useCases, useCaseDetail } from '@/hooks/useCards'
+import type { UseCaseParam } from '@/types/case'
 import { type BadgeMeta } from '@/types/common'
 
-import type { ParamObject } from '@/types/tab'
-
 const BADGES: BadgeMeta[] = [
-  { key: 'estimate', label: '견적 산정', color: '#2563eb', bg: 'rgba(37,99,235,0.1)' },
+  { key: 'estimate', label: '견적 산정', color: '#2563eb', bg: 'rgba(127, 133, 147, 0.1)' },
   { key: 'injury', label: '대인피해', color: '#dc2626', bg: 'rgba(220,38,38,0.1)' },
   { key: 'fault', label: '과실 산정', color: '#16a34a', bg: 'rgba(22,163,74,0.1)' },
   { key: 'process', label: '처리 방법', color: '#aa3bff', bg: 'rgba(170,59,255,0.1)' },
@@ -36,8 +35,8 @@ function CardDetail() {
   const TabContent = TAB_COMPONENTS[activeTab] ?? EstimateTab
   const TabData = BADGES[activeTab] ?? BADGES[0]
   // usecase
-  const [selectedValue, setSelectedValue] = useState<ParamObject>({})
-  const [selectedCase, setSelectedCase] = useState<string>('')
+  const [selectedCase, setSelectedCase] = useState<string>('') // usecase id
+  const [selectedValue, setSelectedValue] = useState<UseCaseParam>({}) // usecase Detail > usecase Param
 
   const { selectCaseOptions = [] } = useCases()
   const { data: caseDetail, refetch } = useCaseDetail(Number(selectedCase), false)
@@ -53,24 +52,22 @@ function CardDetail() {
   // [FUNC] UseCase 불러오기 버튼
   const onLoadCaseDetail = () => {
     // 버튼 클릭 시 상세조회 API 호출 (자동 호출 방지, 수동 실행)
-    refetch()
+    refetch().then(() => {
+      const ownVehicle = caseDetail?.ownVehicle?.[0]
+      const otherVehicle = caseDetail?.otherVehicle?.[0]
+      setSelectedValue({
+        ...selectedValue,
+        ownVehicle: ownVehicle,
+        otherVehicle: otherVehicle,
+      })
+    })
   }
 
+  // [FUNC] 상황보기 팝업 닫기
   const closePopup = () => setPopupOpen(false)
 
   useEffect(() => {
     console.log('selectedValue change :: ', selectedValue)
-    // if (caseDetail) {
-    //   setSelectedValue({
-    //     id: selectedCase,
-    //     name: '',
-    //     obj1: '',
-    //     brandCd: '',
-    //     damageCds: [],
-    //     ownVehicle: caseDetail.ownVehicle,
-    //     otherVehicle: caseDetail.otherVehicle,
-    //   })
-    // }
   }, [selectedValue])
 
   if (isLoading) return <p className="status-msg">불러오는 중...</p>
@@ -113,12 +110,7 @@ function CardDetail() {
           onViewSituation={() => setPopupOpen(true)}
         />
         {/* 탭 화면 */}
-        <TabContent
-          card={card}
-          selectedValue={selectedValue}
-          onSelectChange={setSelectedValue}
-          caseDetail={caseDetail}
-        />
+        <TabContent card={card} selectedValue={selectedValue} onSelectChange={setSelectedValue} />
       </main>
       {/* 상황보기 팝업 */}
       <BasePopup

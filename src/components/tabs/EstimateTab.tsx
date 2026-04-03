@@ -1,10 +1,9 @@
 // AI 자동차 손해사정 > 견적 산정 탭
 import { useEffect, useMemo, useState } from 'react'
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@/types/tab'
 import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
-import type { UseCaseDetail } from '@/types/case'
+import type { UseCaseParam } from '@/types/case'
 
 import {
   BaseButton,
@@ -21,9 +20,8 @@ import {
 
 interface Props {
   card: Card
-  selectedValue: ParamObject
-  onSelectChange: (value: ParamObject) => void
-  caseDetail?: UseCaseDetail
+  selectedValue: UseCaseParam // usecaseParam
+  onSelectChange: (value: UseCaseParam) => void // usecaseParam update
 }
 
 type RadioOption = {
@@ -54,14 +52,7 @@ const damageLevelOptions: RadioOption[] = [
   { label: '전손 추정', value: 'd' },
 ]
 
-function EstimateTab({ selectedValue, onSelectChange, caseDetail }: Props) {
-  useEffect(() => {
-     if (!caseDetail) return
-
-     console.log(caseDetail)
-
-  }, [caseDetail])
-
+function EstimateTab({ selectedValue, onSelectChange }: Props) {
   // useState 공통 상태 선언
   const [form, setForm] = useState<FormState>({
     vehicleType: '', //  차량정보
@@ -85,12 +76,8 @@ function EstimateTab({ selectedValue, onSelectChange, caseDetail }: Props) {
   const { damageOptions } = useDamages()
 
   useEffect(() => {
-    const ownVehicle = selectedValue?.ownVehicle?.[0]
-
-    if (!ownVehicle) return
-
-    // handleChange('brandValue', String(ownVehicle.brand?.id ?? ''))
-  }, [selectedValue.ownVehicle])
+    console.log('견적산정 selectedValue ::', selectedValue)
+  }, [selectedValue])
 
   const handleChipChange = (category: string) => (values: string[]) => {
     setSelectedChips((prev) => ({ ...prev, [category]: values }))
@@ -132,9 +119,9 @@ function EstimateTab({ selectedValue, onSelectChange, caseDetail }: Props) {
       brandCd: value,
     }))
 
+    // 임시 사용, TODO: 수정 값 usecaseParam에 update
     onSelectChange({
       ...selectedValue,
-      brandCd: value,
     })
   }
 

@@ -1,14 +1,14 @@
 // AI 자동차 손해사정 > 처리 방법 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@/types/tab'
+import type { UseCaseParam } from '@/types/case'
 
 import { BaseSection, BaseButton, BaseTextarea, BaseRadio } from '@components/common'
 
 interface Props {
   card: Card
-  selectedValue: ParamObject
-  onSelectChange: (value: ParamObject) => void
+  selectedValue: UseCaseParam
+  onSelectChange: (value: UseCaseParam) => void
 }
 
 const radioOptions = [

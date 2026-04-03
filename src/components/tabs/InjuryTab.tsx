@@ -1,13 +1,13 @@
 // AI 자동차 손해사정 > 대인 피해 탭
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@/types/tab'
+import type { UseCaseParam } from '@/types/case'
 
 import { BaseSection, BaseTextarea, BaseButton } from '@components/common'
 
 interface Props {
   card: Card
-  selectedValue: ParamObject
-  onSelectChange: (value: ParamObject) => void
+  selectedValue: UseCaseParam
+  onSelectChange: (value: UseCaseParam) => void
 }
 
 function InjuryTab({ selectedValue, onSelectChange }: Props) {

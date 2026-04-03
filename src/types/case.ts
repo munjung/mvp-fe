@@ -22,3 +22,10 @@ export interface UseCaseVehicle {
   model: Model
   damageParts?: DamageCategory[]
 }
+
+// AI 분석 전달용 파라미터
+export interface UseCaseParam {
+  id?: number | string
+  ownVehicle?: UseCaseVehicle
+  otherVehicle?: UseCaseVehicle
+}
