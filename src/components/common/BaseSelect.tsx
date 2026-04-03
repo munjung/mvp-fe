@@ -3,7 +3,7 @@ import type { SelectOption } from '@/types/common'
 
 interface BaseSelectProps {
   options: SelectOption[]
-  value: string
+  value: string | number
   onChange: (value: string) => void
   placeholder?: string
   className?: string
@@ -17,7 +17,7 @@ export default function BaseSelect({
   className = '',
 }: BaseSelectProps) {
   return (
-    <Select.Root value={value} onValueChange={onChange}>
+    <Select.Root value={String(value)} onValueChange={onChange}>
       <Select.Trigger className={`base-select-trigger ${className}`.trim()}>
         <Select.Value placeholder={placeholder} />
         <Select.Icon>▼</Select.Icon>

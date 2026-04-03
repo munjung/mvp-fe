@@ -1,7 +1,7 @@
 // AI 자동차 손해사정 > 견적 산정 탭
 import { useEffect, useMemo, useState } from 'react'
 import type { Card } from '@api/cards'
-import { useBrands, useDamages, useChats } from '@/hooks/useEstimate'
+import { useBrands, useModels, useDamages, useChats } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
 import type { UseCaseParam } from '@/types/case'
 
@@ -32,8 +32,8 @@ type RadioOption = {
 type FormState = {
   vehicleType: string
   damageLevel: string
-  brandValue: string
-  modelValue: string
+  brandValue: number
+  modelValue: number
   yearValue: string
   mileageValue: string
 }
@@ -56,8 +56,8 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   // useState 공통 상태 선언
   const [form, setForm] = useState<FormState>({
     vehicleType: '', //  차량정보
-    brandValue: '', //   제조사
-    modelValue: '', //   모델
+    brandValue: selectedValue?.ownVehicle?.brand?.id ?? 0, //   제조사
+    modelValue: selectedValue?.ownVehicle?.model?.id ?? 0, //   모델
     yearValue: '', //    연식
     mileageValue: '', // 주행거리
     damageLevel: '', //  파손정도
@@ -74,10 +74,29 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
   const { brandOptions } = useBrands()
   const { damageOptions } = useDamages()
+  const { modelOptions, refetch } = useModels(selectedValue?.ownVehicle?.brand?.id ?? 0)
 
   useEffect(() => {
-    console.log('견적산정 selectedValue ::', selectedValue)
+    if (selectedValue?.ownVehicle) {
+      // 1. 제조사 > 모델 목록 조회
+      if (selectedValue.ownVehicle?.brand?.id) {
+        refetch()
+      }
+
+      setForm({
+        vehicleType: '',
+        brandValue: selectedValue?.ownVehicle?.brand?.id ?? 0,
+        modelValue: selectedValue?.ownVehicle?.model?.id ?? 0,
+        yearValue: '',
+        mileageValue: '',
+        damageLevel: '',
+      })
+    }
   }, [selectedValue])
+
+  useEffect(() => {
+    console.log('form change ::', form)
+  }, [form])
 
   const handleChipChange = (category: string) => (values: string[]) => {
     setSelectedChips((prev) => ({ ...prev, [category]: values }))
@@ -119,7 +138,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
       brandCd: value,
     }))
 
-    // 임시 사용, TODO: 수정 값 usecaseParam에 update
+    // 임시 사용, TODO: 상의필요.. 수정 값 > AI 분석 실행 시? usecaseParam에 update / 처리방법에서 모두 사용(아마..)
     onSelectChange({
       ...selectedValue,
     })
@@ -162,7 +181,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
               <BaseFormField label="모델" required>
                 <BaseSelect
-                  options={[]}
+                  options={modelOptions}
                   value={form.modelValue}
                   onChange={(value) => handleChange('modelValue', value)}
                   placeholder="선택"

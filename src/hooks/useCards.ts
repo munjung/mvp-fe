@@ -30,6 +30,6 @@ export const useCaseDetail = (id?: number, enabled = true) => {
   return useQuery({
     queryKey: ['caseDetail', id],
     queryFn: () => getCaseDetail(id as number),
-    enabled,
+    enabled: enabled && !!id,
   })
 }

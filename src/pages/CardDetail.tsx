@@ -39,30 +39,36 @@ function CardDetail() {
   const [selectedValue, setSelectedValue] = useState<UseCaseParam>({}) // usecase Detail > usecase Param
 
   const { selectCaseOptions = [] } = useCases()
-  const { data: caseDetail, refetch } = useCaseDetail(Number(selectedCase), false)
+  // data: caseDetail, 사용할 때 다시 넣을 예정..
+  const { refetch } = useCaseDetail(Number(selectedCase), false)
   // popup
   const [popupOpen, setPopupOpen] = useState(false)
 
   // [FUNC] UseCase 변경
   const onSelectCaseChange = useCallback((value: string) => {
-    console.log(value)
+    console.log('usecase 변경 ::', value)
     setSelectedCase(value)
   }, [])
 
   // [FUNC] UseCase 불러오기 버튼
-  const onLoadCaseDetail = () => {
-    // 버튼 클릭 시 상세조회 API 호출 (자동 호출 방지, 수동 실행)
-    refetch().then(() => {
-      const ownVehicle = caseDetail?.ownVehicle?.[0]
-      const otherVehicle = caseDetail?.otherVehicle?.[0]
-      setSelectedValue({
-        ...selectedValue,
-        ownVehicle: ownVehicle,
-        otherVehicle: otherVehicle,
-      })
-    })
+  const onLoadCaseDetail = async () => {
+    const { data } = await refetch()
+    if (!data) return
+
+    const ownVehicle = data.ownVehicle?.[0]
+    const otherVehicle = data.otherVehicle?.[0]
+
+    setSelectedValue((prev) => ({
+      ...prev,
+      ownVehicle,
+      otherVehicle,
+    }))
   }
 
+  const onSelectCaseReset = () => {
+    setSelectedCase('')
+    setSelectedValue({})
+  }
   // [FUNC] 상황보기 팝업 닫기
   const closePopup = () => setPopupOpen(false)
 
@@ -106,7 +112,7 @@ function CardDetail() {
           selectedValue={selectedCase}
           onSelectChange={onSelectCaseChange}
           onLoad={onLoadCaseDetail}
-          onReset={() => setSelectedCase('')}
+          onReset={onSelectCaseReset}
           onViewSituation={() => setPopupOpen(true)}
         />
         {/* 탭 화면 */}
