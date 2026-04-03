@@ -5,6 +5,7 @@ import { useBrands, useModels, useDamages, useChats } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
 import type { UseCaseParam } from '@/types/case'
 import type { DamageCategory } from '@/types/damage'
+import { YEAR_OPTIONS } from '@/constants/year'
 
 import {
   BaseButton,
@@ -213,7 +214,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
               <BaseFormField label="연식">
                 <BaseSelect
-                  options={[]}
+                  options={YEAR_OPTIONS}
                   value={form.yearValue}
                   onChange={(value) => handleChange('yearValue', value)}
                   placeholder="선택"
