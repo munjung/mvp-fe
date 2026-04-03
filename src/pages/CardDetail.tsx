@@ -26,17 +26,7 @@ function CardDetail() {
   const navigate = useNavigate()
   const { data: cards, isLoading, isError } = useCards()
   const [activeTab, setActiveTab] = useState(0)
-  const [selectedValue, setSelectedValue] = useState<ParamObject>({
-    id: '',
-    name: '',
-    obj1: '',
-    brandCd: '',
-    damageCds: [''],
-  })
-
-  useEffect(() => {
-    console.log(selectedValue)
-  }, [selectedValue])
+  const [selectedValue, setSelectedValue] = useState<ParamObject>({})
 
   const [selectedCase, setSelectedCase] = useState<string>('')
   const [caseDetailId, setCaseDetailId] = useState<number | undefined>(undefined)
@@ -62,6 +52,21 @@ function CardDetail() {
   }, [selectedCase])
 
   const closePopup = () => setPopupOpen(false)
+
+  useEffect(() => {
+    if (caseDetail) {
+      setSelectedValue({
+        id: selectedCase,
+        name: '',
+        obj1: '',
+        brandCd: '',
+        damageCds: [],
+        ownVehicle: caseDetail.ownVehicle,
+        otherVehicle: caseDetail.otherVehicle,
+      })
+    }
+     console.log(selectedValue)
+  }, [caseDetail, selectedCase])
 
   if (isLoading) return <p className="status-msg">불러오는 중...</p>
   if (isError) return <p className="status-msg error">데이터를 불러오지 못했습니다.</p>
@@ -99,10 +104,12 @@ function CardDetail() {
           onReset={() => setSelectedCase('')}
           onViewSituation={() => setPopupOpen(true)}
         />
-        <TabContent 
-        card={card} selectedValue={selectedValue} 
-        onSelectChange={setSelectedValue} 
-        caseDetail={caseDetail}/>
+        <TabContent
+            card={card}
+            selectedValue={selectedValue}
+            onSelectChange={setSelectedValue}
+            caseDetail={caseDetail}
+          />
       </main>
 
       <BasePopup
