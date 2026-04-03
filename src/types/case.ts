@@ -1,5 +1,5 @@
 import type { Brand, Model } from './brand'
-import type { DamageParts } from './damage'
+import type { DamageCategory } from './damage'
 
 export interface UseCase {
   id: number
@@ -20,5 +20,5 @@ export interface UseCaseVehicle {
   price: number
   brand: Brand
   model: Model
-  damageParts?: DamageParts[]
+  damageParts?: DamageCategory[]
 }
