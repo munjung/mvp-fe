@@ -527,10 +527,13 @@
   border-radius: var(--radius-md);
   background: var(--bg);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  max-height: 240px;
 }
 
 .base-select-viewport {
   padding: 6px;
+  max-height: 240px;
+  overflow-y: auto;
 }
 
 .base-select-item {
