@@ -17,20 +17,19 @@ export const useCases = () => {
 
   const selectCaseOptions: SelectOption[] = (query.data ?? []).map((usecase) => ({
     label: usecase.name,
-    value: String(usecase.id)
-  })) 
-  
+    value: String(usecase.id),
+  }))
+
   return {
     ...query,
     selectCaseOptions,
   }
 }
 
-
-export const useCaseDetail = (id? : number) => {
+export const useCaseDetail = (id?: number, enabled = true) => {
   return useQuery({
     queryKey: ['caseDetail', id],
     queryFn: () => getCaseDetail(id as number),
-    enabled: !!id
+    enabled,
   })
 }

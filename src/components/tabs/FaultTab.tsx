@@ -1,7 +1,7 @@
 // AI 자동차 손해사정 > 과실 산정 탭
 import { useState } from 'react'
 import type { Card } from '@api/cards'
-import type { ParamObject } from '@/types/tab'
+import type { UseCaseParam } from '@/types/case'
 
 import {
   BaseButton,
@@ -16,8 +16,8 @@ import {
 
 interface Props {
   card: Card
-  selectedValue: ParamObject
-  onSelectChange: (value: ParamObject) => void
+  selectedValue: UseCaseParam
+  onSelectChange: (value: UseCaseParam) => void
 }
 
 // [DATA] 라디오 버튼 옵션
