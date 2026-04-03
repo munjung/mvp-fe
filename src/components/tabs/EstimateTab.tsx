@@ -4,6 +4,7 @@ import type { Card } from '@api/cards'
 import { useBrands, useModels, useDamages, useChats } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
 import type { UseCaseParam } from '@/types/case'
+import type { DamageCategory } from '@/types/damage'
 
 import {
   BaseButton,
@@ -76,6 +77,10 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   const { damageOptions } = useDamages()
   const { modelOptions, refetch } = useModels(selectedValue?.ownVehicle?.brand?.id ?? 0)
 
+  const handleChipChange = (category: string) => (values: string[]) => {
+    setSelectedChips((prev) => ({ ...prev, [category]: values }))
+  }
+
   useEffect(() => {
     if (selectedValue?.ownVehicle) {
       // 1. 제조사 > 모델 목록 조회
@@ -83,24 +88,42 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         refetch()
       }
 
+      // 2. 파손 부위 세팅
+      selectedValue?.ownVehicle?.damageParts?.map((damage: DamageCategory) => {
+        console.log(damage)
+        if (damage?.part && damage?.part?.length > 0) {
+          // TODO. 라디오 버튼 label, value 리스트로 변경, 현재는 string[]
+          const parts = damage.part.map((item) => item.name)
+          console.log(parts)
+          handleChipChange(damage.category)(parts)
+        }
+      })
+
+      // 3. 나머지 Form 세팅
       setForm({
-        vehicleType: '',
+        vehicleType: 'a',
         brandValue: selectedValue?.ownVehicle?.brand?.id ?? 0,
         modelValue: selectedValue?.ownVehicle?.model?.id ?? 0,
         yearValue: '',
         mileageValue: '',
         damageLevel: '',
       })
+    } else {
+      setForm({
+        vehicleType: '',
+        brandValue: 0,
+        modelValue: 0,
+        yearValue: '',
+        mileageValue: '',
+        damageLevel: '',
+      })
+      setSelectedChips({})
     }
   }, [selectedValue])
 
   useEffect(() => {
     console.log('form change ::', form)
   }, [form])
-
-  const handleChipChange = (category: string) => (values: string[]) => {
-    setSelectedChips((prev) => ({ ...prev, [category]: values }))
-  }
 
   const selectedDamageText = useMemo(() => {
     return Object.entries(selectedChips)
