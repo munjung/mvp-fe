@@ -32,7 +32,7 @@ type RadioOption = {
 
 type FormState = {
   vehicleType: string
-  damageLevel: string
+  damageDegree: string
   brandValue: number
   modelValue: number
   yearValue: string
@@ -46,11 +46,11 @@ const vehicleTypeOptions: RadioOption[] = [
   { label: '외산', value: 'imported' },
 ]
 
-const damageLevelOptions: RadioOption[] = [
-  { label: '경미', value: 'a' },
-  { label: '중간', value: 'b' },
-  { label: '심각', value: 'c' },
-  { label: '전손 추정', value: 'd' },
+const damageDegreeOptions: RadioOption[] = [
+  { label: '경미', value: '경미' },
+  { label: '중간', value: '중간' },
+  { label: '심각', value: '심각' },
+  { label: '전손 추정', value: '전손 추정' },
 ]
 
 function EstimateTab({ selectedValue, onSelectChange }: Props) {
@@ -61,7 +61,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
     modelValue: selectedValue?.ownVehicle?.model?.id ?? 0, //   모델
     yearValue: '', //    연식
     mileageValue: '', // 주행거리
-    damageLevel: '', //  파손정도
+    damageDegree: selectedValue?.ownVehicle?.damageDegree ?? '', //  파손정도
   })
 
   // useState 공통 변경 함수
@@ -92,9 +92,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
       selectedValue?.ownVehicle?.damageParts?.map((damage: DamageCategory) => {
         console.log(damage)
         if (damage?.part && damage?.part?.length > 0) {
-          // TODO. 라디오 버튼 label, value 리스트로 변경, 현재는 string[]
-          const parts = damage.part.map((item) => item.name)
-          console.log(parts)
+          const parts = damage.part.map((item) => String(item.id))
           handleChipChange(damage.category)(parts)
         }
       })
@@ -106,7 +104,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         modelValue: selectedValue?.ownVehicle?.model?.id ?? 0,
         yearValue: '',
         mileageValue: '',
-        damageLevel: '',
+        damageDegree: selectedValue?.ownVehicle?.damageDegree,
       })
     } else {
       setForm({
@@ -115,7 +113,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         modelValue: 0,
         yearValue: '',
         mileageValue: '',
-        damageLevel: '',
+        damageDegree: '',
       })
       setSelectedChips({})
     }
@@ -126,11 +124,10 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   }, [form])
 
   const selectedDamageText = useMemo(() => {
-    return Object.entries(selectedChips)
-      .flatMap(([category, values]) =>
-        values.map((v) => damageOptions[category]?.find((o) => o.value === v)?.label ?? v),
-      )
-      .join(', ')
+    return Object.entries(selectedChips).flatMap(([category, values]) =>
+      values.map((v) => damageOptions[category]?.find((o) => o.value === v)?.label ?? v),
+    )
+    // .join(', ')
   }, [selectedChips, damageOptions])
 
   const { ruleResults, ruleLoading, runRules } = useRuleEngine()
@@ -246,8 +243,8 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
           <BaseSection className="mt-20" title="파손 부위">
             <BaseFormField className="w100">
-              <p>{selectedDamageText}</p>
-
+              <p>{selectedDamageText.join(', ')}</p>
+              <p>{selectedDamageText.length}/20</p>
               {Object.keys(damageOptions).map((category) => (
                 <BaseMultiSelectChip
                   key={category}
@@ -262,9 +259,9 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
           <BaseSection className="mt-20" title="파손 정도">
             <BaseRadio
-              options={damageLevelOptions}
-              value={form.damageLevel}
-              onChange={(value) => handleChange('damageLevel', value)}
+              options={damageDegreeOptions}
+              value={form.damageDegree}
+              onChange={(value) => handleChange('damageDegree', value)}
             />
           </BaseSection>
 
