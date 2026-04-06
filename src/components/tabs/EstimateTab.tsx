@@ -1,11 +1,14 @@
 // AI 자동차 손해사정 > 견적 산정 탭
 import { useEffect, useMemo, useState } from 'react'
 import type { Card } from '@api/cards'
-import { useBrands, useModels, useDamages, useChats } from '@/hooks/useEstimate'
+import { useBrands, useModels, useDamages } from '@/hooks/useEstimate'
 import { useRuleEngine } from '@/hooks/useRuleEngine'
-import type { UseCaseParam } from '@/types/case'
+import type { UseCaseParam, ChatBlock } from '@/types/case'
 import type { DamageCategory } from '@/types/damage'
 import { YEAR_OPTIONS } from '@/constants/year'
+import { useChats } from '@/hooks/useCards'
+import { alert } from '@/lib/dialog'
+import { isEmpty } from '@/utils/common'
 
 import {
   BaseButton,
@@ -33,7 +36,7 @@ type RadioOption = {
 
 type FormState = {
   vehicleType: string
-  damageLevel: string
+  damageDegree: string
   brandValue: number
   modelValue: number
   yearValue: string
@@ -47,11 +50,11 @@ const vehicleTypeOptions: RadioOption[] = [
   { label: '외산', value: 'imported' },
 ]
 
-const damageLevelOptions: RadioOption[] = [
-  { label: '경미', value: 'a' },
-  { label: '중간', value: 'b' },
-  { label: '심각', value: 'c' },
-  { label: '전손 추정', value: 'd' },
+const damageDegreeOptions: RadioOption[] = [
+  { label: '경미', value: '경미' },
+  { label: '중간', value: '중간' },
+  { label: '심각', value: '심각' },
+  { label: '전손 추정', value: '전손 추정' },
 ]
 
 function EstimateTab({ selectedValue, onSelectChange }: Props) {
@@ -62,7 +65,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
     modelValue: selectedValue?.ownVehicle?.model?.id ?? 0, //   모델
     yearValue: '', //    연식
     mileageValue: '', // 주행거리
-    damageLevel: '', //  파손정도
+    damageDegree: selectedValue?.ownVehicle?.damageDegree ?? '', //  파손정도
   })
 
   // useState 공통 변경 함수
@@ -91,11 +94,8 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
       // 2. 파손 부위 세팅
       selectedValue?.ownVehicle?.damageParts?.map((damage: DamageCategory) => {
-        console.log(damage)
         if (damage?.part && damage?.part?.length > 0) {
-          // TODO. 라디오 버튼 label, value 리스트로 변경, 현재는 string[]
-          const parts = damage.part.map((item) => item.name)
-          console.log(parts)
+          const parts = damage.part.map((item) => String(item.id))
           handleChipChange(damage.category)(parts)
         }
       })
@@ -107,7 +107,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         modelValue: selectedValue?.ownVehicle?.model?.id ?? 0,
         yearValue: '',
         mileageValue: '',
-        damageLevel: '',
+        damageDegree: selectedValue?.ownVehicle?.damageDegree,
       })
     } else {
       setForm({
@@ -116,22 +116,21 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
         modelValue: 0,
         yearValue: '',
         mileageValue: '',
-        damageLevel: '',
+        damageDegree: '',
       })
       setSelectedChips({})
     }
   }, [selectedValue])
 
   useEffect(() => {
-    console.log('form change ::', form)
+    // console.log('form change ::', form)
   }, [form])
 
   const selectedDamageText = useMemo(() => {
-    return Object.entries(selectedChips)
-      .flatMap(([category, values]) =>
-        values.map((v) => damageOptions[category]?.find((o) => o.value === v)?.label ?? v),
-      )
-      .join(', ')
+    return Object.entries(selectedChips).flatMap(([category, values]) =>
+      values.map((v) => damageOptions[category]?.find((o) => o.value === v)?.label ?? v),
+    )
+    // .join(', ')
   }, [selectedChips, damageOptions])
 
   const { ruleResults, ruleLoading, runRules } = useRuleEngine()
@@ -139,48 +138,94 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
   // -----------------------
   //  AI 분석
   // -----------------------
-  type ChatParams = {
-    brandCd: string
-    damageCds: string[]
-  }
 
-  const [searchForm, setSearchForm] = useState<ChatParams>({
-    brandCd: '',
-    damageCds: [],
-  })
+  const [chatLoading, setChatLoading] = useState(false)
+  const [aiEstimate, setAiEstimate] = useState<ChatBlock[] | null>(null)
+  const [aiCalculation, setAiCalculation] = useState<ChatBlock[] | null>(null)
+  const [aiAnalyze, setAiAnalyze] = useState<ChatBlock[] | null>(null)
+
+  const { mutate, isPending } = useChats() // 임시 AI API
 
   // AI분석 동작용
-  const [chatParams, setChatParams] = useState<ChatParams | null>(null)
-  const { data: returnChatData, isLoading: chatLoading } = useChats(chatParams)
-  // const [chatStart, setChatStart] = useState(false)
-  // const { data: returnChatData } = useChats(chatParams, chatStart)
+  const startChat = () => {
+    console.log(brandOptions[form.brandValue].label)
+    console.log(modelOptions, form.modelValue)
+    console.log(modelOptions[form.modelValue])
+    setAiEstimate([
+      {
+        id: 0,
+        html: `
+      <p>제조사 : ${brandOptions[form.brandValue].label ?? ''}</p><br />
+      <p>모델 : ${modelOptions[form.modelValue]?.label ?? ''} </p><br />
+      `,
+      },
+    ])
+    setAiCalculation([{ id: 0, html: `<p>123</p>` }])
 
-  const handleChangeBrand = (value: string) => {
-    handleChange('brandValue', value)
-    setSearchForm((prev) => ({
-      ...prev,
-      brandCd: value,
-    }))
+    const params = {
+      ...selectedValue,
+      ...form,
+    }
 
-    // 임시 사용, TODO: 상의필요.. 수정 값 > AI 분석 실행 시? usecaseParam에 update / 처리방법에서 모두 사용(아마..)
+    mutate(params, {
+      onSuccess: (data) => {
+        setAiAnalyze(data)
+      },
+    })
+    setChatLoading(true)
+  }
+
+  // 견적생성 실행 버튼
+  const handleSearch = () => {
+    console.log(form)
+    if (
+      isEmpty(form.brandValue) ||
+      form.brandValue == 0 ||
+      isEmpty(form.modelValue) ||
+      form.modelValue == 0
+    ) {
+      alert('차량정보를 입력해주세요.')
+      return
+    }
+    if (isEmpty(form.damageDegree)) {
+      alert('파손정도를 입력해주세요.')
+      return
+    }
+    startChat()
+    runRules()
+
+    // 임시 사용 처리, TODO: usecaseParam에 update
     onSelectChange({
       ...selectedValue,
     })
   }
 
-  const startChat = () => {
-    setChatParams({
-      ...searchForm,
-      damageCds: [...searchForm.damageCds],
+  // 온톨로지 추론 결과
+  const aiRuleResult = useMemo(() => {
+    return ruleResults.map((r, i) => {
+      const mod =
+        r.severity === 'error' || r.severity === 'critical'
+          ? 'error'
+          : r.severity === 'warn' || r.severity === 'warning'
+            ? 'warn'
+            : 'info'
+      const html = `
+        <div class="rule-result rule-result--${mod}">
+          <div class="rule-result__badges">
+            <span class="rule-result__badge rule-result__badge--${mod}">${r.flag}</span>
+            <span class="rule-result__badge rule-result__badge--${mod}">${r.severity}</span>
+          </div>
+          <div class="rule-result__msg">${r.msg}</div>
+          <div class="rule-result__clause">📌${r.clause}</div>
+        </div>
+        `
+      return {
+        id: i,
+        html: html,
+      }
     })
-    // setChatStart(true)
-  }
-
-  const handleSearch = () => {
-    console.log('견적생성 실행 버튼', searchForm)
-    startChat()
-    runRules()
-  }
+    // 데이터 정제
+  }, [ruleResults])
 
   return (
     <section>
@@ -198,7 +243,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
                 <BaseSelect
                   options={brandOptions}
                   value={form.brandValue}
-                  onChange={handleChangeBrand}
+                  onChange={(value) => handleChange('brandValue', value)}
                   placeholder="선택"
                 />
               </BaseFormField>
@@ -247,8 +292,8 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
           <BaseSection className="mt-20" title="파손 부위">
             <BaseFormField className="w100">
-              <p>{selectedDamageText}</p>
-
+              <p>{selectedDamageText.join(', ')}</p>
+              <p>{selectedDamageText.length}/20</p>
               {Object.keys(damageOptions).map((category) => (
                 <BaseMultiSelectChip
                   key={category}
@@ -263,19 +308,19 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
 
           <BaseSection className="mt-20" title="파손 정도">
             <BaseRadio
-              options={damageLevelOptions}
-              value={form.damageLevel}
-              onChange={(value) => handleChange('damageLevel', value)}
+              options={damageDegreeOptions}
+              value={form.damageDegree}
+              onChange={(value) => handleChange('damageDegree', value)}
             />
           </BaseSection>
 
-          <BaseButton className="mt-10 w100" onClick={handleSearch}>
+          <BaseButton className="mt-10 w100" onClick={handleSearch} disabled={isPending}>
             견적 산정 실행
           </BaseButton>
         </div>
 
         <div className="estimate-layout__right">
-          {!chatParams && (
+          {!chatLoading && (
             <div
               style={{
                 display: 'flex',
@@ -286,23 +331,24 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
               차량과 파손 부위 선택 후 실행하세요
             </div>
           )}
-          {chatParams && (
+          {chatLoading && (
             <div>
               <BaseSection title="예상 견적">
-                <p></p>
+                <BaseChat width="500" chatData={aiEstimate}></BaseChat>
               </BaseSection>
 
               <BaseSection className="mt-20" title="세부 산출">
-                <p></p>
+                <BaseChat width="500" chatData={aiCalculation}></BaseChat>
               </BaseSection>
 
               <BaseSection className="mt-20" title="AI 분석">
-                <BaseChat width="500" loading={chatLoading} chatData={returnChatData}></BaseChat>
+                <BaseChat width="500" chatData={aiAnalyze}></BaseChat>
               </BaseSection>
 
               <BaseSection className="mt-20" title="온톨로지 추론 결과">
                 {ruleLoading && <p style={{ color: '#64748b', fontSize: 13 }}>추론 중...</p>}
-                {!ruleLoading &&
+                {!ruleLoading && <BaseChat width="500" chatData={aiRuleResult}></BaseChat>}
+                {/* {!ruleLoading &&
                   ruleResults.map((r, i) => {
                     const mod =
                       r.severity === 'error' || r.severity === 'critical'
@@ -324,7 +370,7 @@ function EstimateTab({ selectedValue, onSelectChange }: Props) {
                         <div className="rule-result__clause">📌{r.clause}</div>
                       </div>
                     )
-                  })}
+                  })} */}
               </BaseSection>
 
               <BaseSection className="mt-20" title="견적 산정 완료">

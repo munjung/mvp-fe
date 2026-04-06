@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
-import { getCards, getCaseList, getCaseDetail } from '@api/cards'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { getCards, getCaseList, getCaseDetail, getChatData } from '@api/cards'
 import type { SelectOption } from '@/types/common'
+import type { UseCaseParam } from '@/types/case'
 
 export const useCards = () => {
   return useQuery({
@@ -31,5 +32,11 @@ export const useCaseDetail = (id?: number, enabled = true) => {
     queryKey: ['caseDetail', id],
     queryFn: () => getCaseDetail(id as number),
     enabled: enabled && !!id,
+  })
+}
+
+export const useChats = () => {
+  return useMutation({
+    mutationFn: (params: UseCaseParam) => getChatData(params),
   })
 }
