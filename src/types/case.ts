@@ -29,3 +29,9 @@ export interface UseCaseParam {
   ownVehicle?: UseCaseVehicle
   otherVehicle?: UseCaseVehicle
 }
+
+// AI 분석 응답용
+export interface ChatBlock {
+  id: number
+  html: string
+}

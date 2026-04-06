@@ -1,11 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import {
-  getBrandList,
-  getModelList,
-  getDamageList,
-  getChatData,
-  type ChatParams,
-} from '@api/estimate'
+import { getBrandList, getModelList, getDamageList } from '@api/estimate'
 import type { SelectOption } from '@/types/common'
 
 // hook에서 데이터를 완성된 형태로 내려줌
@@ -66,12 +60,4 @@ export const useDamages = () => {
     ...query,
     damageOptions,
   }
-}
-
-export const useChats = (params: ChatParams | null) => {
-  return useQuery({
-    queryKey: ['chats', params],
-    queryFn: () => getChatData(params as ChatParams),
-    enabled: !!params,
-  })
 }
