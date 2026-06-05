@@ -153,4 +153,4 @@ export default defineConfig([
 
 ## 📄 라이선스
 
-이 프로젝트는 MIT 라이선스에 따라 배포됩니다.
+이 프로젝트는 [MIT 라이선스](LICENSE)에 따라 배포됩니다.
