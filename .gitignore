@@ -49,3 +49,7 @@ coverage/
 # Next.js (혹시 사용 시)
 .next/
 out/
+
+# oh-my-claudecode (OMC)
+.omc/
+.claude/
