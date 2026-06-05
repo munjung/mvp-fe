@@ -1,6 +1,42 @@
-## 🚀 React Build
+## ⚙️ 설치 및 실행
 
-npm run dev
+### 요구 사항
+
+- [Node.js](https://nodejs.org/) 20.19+ 또는 22.12+ (Vite 8 권장 버전)
+- npm (Node.js 설치 시 함께 제공)
+
+### 설치
+
+```bash
+# 저장소 클론
+git clone <repository-url>
+cd mvp-fe
+
+# 의존성 설치
+npm install
+```
+
+### 환경 변수
+
+실행 모드별 환경 파일을 사용합니다.
+
+| 파일 | 사용 모드 |
+| --- | --- |
+| `.env.localdev` | 로컬 개발 (`npm run loc`) |
+| `.env.development` | 개발 서버 (`npm run dev`) |
+| `.env.production` | 프로덕션 빌드 (`npm run build`) |
+
+### 실행
+
+```bash
+npm run loc     # 로컬 개발 서버 (localdev 모드)
+npm run dev     # 개발 서버 (development 모드)
+npm run build   # 프로덕션 빌드 (dist/)
+npm run preview # 빌드 결과 미리보기
+npm run lint    # ESLint 검사
+```
+
+개발 서버가 실행되면 터미널에 출력된 로컬 주소(기본 `http://localhost:5173`)로 접속합니다.
 
 ## 🧹 ESLint + Prettier 설정
 
